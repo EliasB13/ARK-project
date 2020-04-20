@@ -12,10 +12,9 @@ namespace ARK_Backend.Infrastructure.Data
 		public DbSet<Employee> Employees { get; set; }
 		public DbSet<EmployeesRole> EmployeesRoles { get; set; }
 		public DbSet<Observation> Observations { get; set; }
-		public DbSet<Person> Persons { get; set; }
+		public DbSet<PersonCard> Persons { get; set; }
 		public DbSet<Reader> Readers { get; set; }
 		public DbSet<RestrictedRoleReader> RestrictedRoleReaders { get; set; }
-		public DbSet<AllowedRoleReader> AllowedRoleReaders { get; set; }
 
 		public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
 		{

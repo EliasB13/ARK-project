@@ -4,14 +4,16 @@ using ARK_Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ARK_Backend.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200420130100_remove_restrictedRoleReaders")]
+    partial class remove_restrictedRoleReaders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,12 +76,6 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                     b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("WorkingDayEndTime")
-                        .HasColumnType("time(0)");
-
-                    b.Property<TimeSpan>("WorkingDayStartTime")
-                        .HasColumnType("time(0)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeesRoleId");
@@ -137,7 +133,7 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                     b.ToTable("Observations");
                 });
 
-            modelBuilder.Entity("ARK_Backend.Domain.Entities.PersonCard", b =>
+            modelBuilder.Entity("ARK_Backend.Domain.Entities.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,9 +167,6 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEntrance")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -219,7 +212,7 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeesRoleId");
 
-                    b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "Person")
+                    b.HasOne("ARK_Backend.Domain.Entities.Person", "Person")
                         .WithMany("Employees")
                         .HasForeignKey("PersonId");
                 });
@@ -233,7 +226,7 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Observation", b =>
                 {
-                    b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "Person")
+                    b.HasOne("ARK_Backend.Domain.Entities.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId");
 

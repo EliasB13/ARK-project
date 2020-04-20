@@ -11,9 +11,9 @@ namespace ARK_Backend.Domain.Entities
 		public string Description { get; set; }
 		public byte[] SecretHash { get; set; }
 		public byte[] SecretSalt { get; set; }
+		public bool IsEntrance { get; set; }
 
 		public BusinessUser BusinessUser { get; set; }
 		public IEnumerable<RestrictedRoleReader> RestrictedRoleReaders { get; set; }
-		public IEnumerable<AllowedRoleReader> AllowedRoleReaders { get; set; }
 	}
 }

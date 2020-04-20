@@ -113,7 +113,7 @@ namespace ARK_Backend
 					{
 						var userService = context.HttpContext.RequestServices.GetRequiredService<IBusinessUsersService>();
 						var userId = int.Parse(context.Principal.Identity.Name);
-						var user = userService.GetById(userId);
+						var user = userService.GetByIdAsync(userId);
 						if (user == null)
 						{
 							context.Fail("Unauthorized");

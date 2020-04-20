@@ -8,6 +8,8 @@ using ARK_Backend.Core.Helpers;
 using ARK_Backend.Core.Services.Communication;
 using ARK_Backend.Core.Dtos.Auth;
 using ARK_Backend.Domain.Entities;
+using ARK_Backend.Core.Dtos.BusinessUsers;
+using ARK_Backend.Core.Mappers;
 
 namespace ARK_Backend.Core.Services.BusinessUsers
 {
@@ -76,6 +78,40 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		public async Task<BusinessUser> GetByIdAsync(int id)
 		{
 			return await dbContext.BusinessUsers.FindAsync(id);
+		}
+
+		public async Task<GenericServiceResponse<BusinessUserAccountData>> GetAccountData(int id)
+		{
+			var user = await dbContext.BusinessUsers.FindAsync(id);
+			if (user == null)
+				return new GenericServiceResponse<BusinessUserAccountData>("User with specified id wasn't found", ErrorCode.USER_NOT_FOUND);
+
+			return new GenericServiceResponse<BusinessUserAccountData>(user.ToAccountData());
+		}
+
+		public async Task<GenericServiceResponse<BusinessUserAccountData>> UpdateBusinessUser(UpdateBusinessUserRequest editData, int businessUserId)
+		{
+			var dbUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+			if (dbUser == null)
+				return new GenericServiceResponse<BusinessUserAccountData>("User with specified id wasn't found.", ErrorCode.USER_NOT_FOUND);
+
+			dbUser.UpdateUserFromDto(editData);
+			dbContext.Entry(dbUser).State = EntityState.Modified;
+			await dbContext.SaveChangesAsync();
+
+			return new GenericServiceResponse<BusinessUserAccountData>(dbUser.ToAccountData());
+		}
+
+		public async Task<GenericServiceResponse<BusinessUser>> DeleteBusinessUser(int businessUserId)
+		{
+			var dbUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+			if (dbUser == null)
+				return new GenericServiceResponse<BusinessUser>("User with specified id wasn't found", ErrorCode.USER_NOT_FOUND);
+
+			dbContext.BusinessUsers.Remove(dbUser);
+			await dbContext.SaveChangesAsync();
+
+			return new GenericServiceResponse<BusinessUser>(dbUser);
 		}
 	}
 }

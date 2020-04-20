@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ARK_Backend.Domain.Entities
 {
-	public class Person
+	public class PersonCard
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

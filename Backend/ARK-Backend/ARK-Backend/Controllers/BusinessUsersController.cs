@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ARK_Backend.Core.Dtos.Auth;
+using ARK_Backend.Core.Dtos.BusinessUsers;
 using ARK_Backend.Core.Helpers;
 using ARK_Backend.Core.Services.BusinessUsers;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ARK_Backend.Controllers
 {
+	[Authorize]
 	[Route("api/[controller]")]
 	public class BusinessUsersController : Controller
 	{
@@ -55,6 +57,48 @@ namespace ARK_Backend.Controllers
 		public async Task<IActionResult> RegisterBusiness([FromBody]RegisterBusinessRequest dto)
 		{
 			var result = await usersService.RegisterBusinessAsync(dto);
+			if (!result.Success)
+			{
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+			}
+
+			return Ok();
+		}
+
+		[HttpGet("account-data")]
+		public async Task<IActionResult> GetAccountData()
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetAccountData(contextUserId);
+			if (!result.Success)
+			{
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+			}
+
+			return Ok(result.Item);
+		}
+
+		[HttpPut]
+		public async Task<IActionResult> Update([FromBody]UpdateBusinessUserRequest businessUser)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.UpdateBusinessUser(businessUser, contextUserId);
+			if (!result.Success)
+			{
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+			}
+
+			return Ok(result.Item);
+		}
+
+		[HttpDelete]
+		public async Task<IActionResult> Delete()
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.DeleteBusinessUser(contextUserId);
 			if (!result.Success)
 			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });

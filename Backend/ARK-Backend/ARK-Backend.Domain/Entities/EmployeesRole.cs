@@ -11,5 +11,6 @@ namespace ARK_Backend.Domain.Entities
 		public string Description { get; set; }
 		
 		public BusinessUser BusinessUser { get; set; }
+		public IEnumerable<RestrictedRoleReader> RestrictedRoleReaders { get; set; }
 	}
 }
