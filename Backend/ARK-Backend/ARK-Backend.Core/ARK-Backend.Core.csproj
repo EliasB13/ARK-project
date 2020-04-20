@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ARK-Backend.Infrastructure\ARK-Backend.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
 </Project>

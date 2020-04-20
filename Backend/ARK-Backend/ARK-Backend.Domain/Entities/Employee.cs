@@ -13,7 +13,7 @@ namespace ARK_Backend.Domain.Entities
 		[Column(TypeName = "time(0)")]
 		public TimeSpan WorkingDayEndTime { get; set; }
 
-		public PersonCard Person { get; set; }
+		public PersonCard PersonCard { get; set; }
 		public EmployeesRole EmployeesRole { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using ARK_Backend.Core.Dtos.Auth;
 using ARK_Backend.Core.Dtos.BusinessUsers;
+using ARK_Backend.Core.Dtos.PersonCards;
 using ARK_Backend.Core.Services.Communication;
 using ARK_Backend.Domain.Entities;
 using System;
@@ -17,5 +18,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		Task<GenericServiceResponse<BusinessUserAccountData>> UpdateBusinessUser(UpdateBusinessUserRequest editData, int businessUserId);
 		Task<GenericServiceResponse<BusinessUser>> DeleteBusinessUser(int businessUserId);
 		Task<GenericServiceResponse<BusinessUserAccountData>> GetAccountData(int id);
+		Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, PersonCardDto personCard);
+		Task<GenericServiceResponse<PersonCardDto>> DeletePersonCard(int businessUserId, int personCardId);
 	}
 }

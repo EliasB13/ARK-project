@@ -1,15 +1,15 @@
-﻿using ARK_Backend.Infrastructure.Data;
+﻿using ARK_Backend.Core.Dtos.Auth;
+using ARK_Backend.Core.Dtos.BusinessUsers;
+using ARK_Backend.Core.Dtos.PersonCards;
+using ARK_Backend.Core.Helpers;
+using ARK_Backend.Core.Mappers;
+using ARK_Backend.Core.Services.Communication;
+using ARK_Backend.Domain.Entities;
+using ARK_Backend.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ARK_Backend.Core.Helpers;
-using ARK_Backend.Core.Services.Communication;
-using ARK_Backend.Core.Dtos.Auth;
-using ARK_Backend.Domain.Entities;
-using ARK_Backend.Core.Dtos.BusinessUsers;
-using ARK_Backend.Core.Mappers;
 
 namespace ARK_Backend.Core.Services.BusinessUsers
 {
@@ -61,7 +61,11 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 					Email = userDto.Email,
 					CompanyName = userDto.CompanyName,
 					PasswordHash = passwordHash,
-					PasswordSalt = passwordSalt
+					PasswordSalt = passwordSalt,
+					EmployeesRoles = new List<EmployeesRole>()
+					{
+						new EmployeesRole() { IsAnonymous = true }
+					}
 				};
 
 				await dbContext.BusinessUsers.AddAsync(user);
@@ -92,8 +96,6 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		public async Task<GenericServiceResponse<BusinessUserAccountData>> UpdateBusinessUser(UpdateBusinessUserRequest editData, int businessUserId)
 		{
 			var dbUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
-			if (dbUser == null)
-				return new GenericServiceResponse<BusinessUserAccountData>("User with specified id wasn't found.", ErrorCode.USER_NOT_FOUND);
 
 			dbUser.UpdateUserFromDto(editData);
 			dbContext.Entry(dbUser).State = EntityState.Modified;
@@ -105,13 +107,86 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		public async Task<GenericServiceResponse<BusinessUser>> DeleteBusinessUser(int businessUserId)
 		{
 			var dbUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
-			if (dbUser == null)
-				return new GenericServiceResponse<BusinessUser>("User with specified id wasn't found", ErrorCode.USER_NOT_FOUND);
 
 			dbContext.BusinessUsers.Remove(dbUser);
 			await dbContext.SaveChangesAsync();
 
 			return new GenericServiceResponse<BusinessUser>(dbUser);
 		}
+
+		public async Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, PersonCardDto dto)
+		{
+			try
+			{
+				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
+				EmployeesRole emplRole = null;
+
+				TimeSpan startsAt, endsAt;
+
+				if (dto.IsEmployee)
+				{
+					if (!dto.EmployeesRoleId.HasValue || dto.WorkingDayStartTime == null || dto.WorkingDayEndTime == null)
+						return new GenericServiceResponse<PersonCardDto>($"Wrong params", ErrorCode.ERROR_MOQ);
+
+					emplRole = await dbContext.EmployeesRoles.FindAsync(dto.EmployeesRoleId.Value);
+					if (emplRole == null)
+						return new GenericServiceResponse<PersonCardDto>($"Employees role with id: { dto.EmployeesRoleId.Value } wasn't found", ErrorCode.ERROR_MOQ);
+
+					if (!TimeSpan.TryParse(dto.WorkingDayStartTime, out startsAt) || !TimeSpan.TryParse(dto.WorkingDayEndTime, out endsAt))
+						return new GenericServiceResponse<PersonCardDto>("Wrong working day bounds", ErrorCode.ERROR_MOQ);
+				}
+				else
+				{
+					emplRole = await dbContext.EmployeesRoles.SingleAsync(er => er.BusinessUser.Id == bUser.Id && er.IsAnonymous);
+					if (emplRole == null)
+						return new GenericServiceResponse<PersonCardDto>($"Anonymous employees role wasn't found", ErrorCode.ERROR_MOQ);
+
+					startsAt = new TimeSpan();
+					endsAt = new TimeSpan();
+				}
+
+				var card = dto.ToPersonCard();
+				card.Employees = new List<Employee>()
+				{
+					new Employee
+					{
+						PersonCard = card,
+						EmployeesRole = emplRole,
+						WorkingDayStartTime = startsAt,
+						WorkingDayEndTime = endsAt
+					}
+				};
+
+				await dbContext.PersonCards.AddAsync(card);
+				await dbContext.SaveChangesAsync();
+
+				return new GenericServiceResponse<PersonCardDto>(card.ToDto());
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
+		}
+
+		public async Task<GenericServiceResponse<PersonCardDto>> DeletePersonCard(int businessUserId, int personCardId)
+		{
+			try
+			{
+				var personCard = await dbContext.PersonCards.FindAsync(personCardId);
+				if (personCard == null)
+					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } wasn't found", ErrorCode.ERROR_MOQ);
+
+				dbContext.PersonCards.Remove(personCard);
+				await dbContext.SaveChangesAsync();
+
+				return new GenericServiceResponse<PersonCardDto>(personCard.ToDto());
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
+		}
+
 	}
 }

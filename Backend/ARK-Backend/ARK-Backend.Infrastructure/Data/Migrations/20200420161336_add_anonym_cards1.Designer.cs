@@ -4,14 +4,16 @@ using ARK_Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ARK_Backend.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200420161336_add_anonym_cards1")]
+    partial class add_anonym_cards1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,16 +229,14 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "PersonCard")
                         .WithMany("Employees")
-                        .HasForeignKey("PersonCardId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonCardId");
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.EmployeesRole", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.BusinessUser", "BusinessUser")
                         .WithMany("EmployeesRoles")
-                        .HasForeignKey("BusinessUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BusinessUserId");
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Observation", b =>

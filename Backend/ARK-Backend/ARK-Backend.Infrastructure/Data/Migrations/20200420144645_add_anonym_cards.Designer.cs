@@ -4,14 +4,16 @@ using ARK_Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ARK_Backend.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200420144645_add_anonym_cards")]
+    partial class add_anonym_cards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +149,6 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsEmployee")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -162,7 +161,7 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PersonCards");
+                    b.ToTable("Persons");
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Reader", b =>
@@ -227,16 +226,14 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "PersonCard")
                         .WithMany("Employees")
-                        .HasForeignKey("PersonCardId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonCardId");
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.EmployeesRole", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.BusinessUser", "BusinessUser")
                         .WithMany("EmployeesRoles")
-                        .HasForeignKey("BusinessUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BusinessUserId");
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Observation", b =>

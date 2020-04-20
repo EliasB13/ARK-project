@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ARK_Backend.Core.Dtos.Auth;
 using ARK_Backend.Core.Dtos.BusinessUsers;
+using ARK_Backend.Core.Dtos.PersonCards;
 using ARK_Backend.Core.Helpers;
 using ARK_Backend.Core.Services.BusinessUsers;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,20 @@ namespace ARK_Backend.Controllers
 		{
 			this.appSettings = appSettings.Value;
 			this.usersService = usersService;
+		}
+
+		[HttpGet("account-data")]
+		public async Task<IActionResult> GetAccountData()
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetAccountData(contextUserId);
+			if (!result.Success)
+			{
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+			}
+
+			return Ok(result.Item);
 		}
 
 		[AllowAnonymous]
@@ -58,23 +73,19 @@ namespace ARK_Backend.Controllers
 		{
 			var result = await usersService.RegisterBusinessAsync(dto);
 			if (!result.Success)
-			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-			}
 
 			return Ok();
 		}
 
-		[HttpGet("account-data")]
-		public async Task<IActionResult> GetAccountData()
+		[HttpPost("add-person-card")]
+		public async Task<IActionResult> AddPersonCard([FromBody]PersonCardDto dto)
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
-			var result = await usersService.GetAccountData(contextUserId);
+			var result = await usersService.AddPersonCard(contextUserId, dto);
 			if (!result.Success)
-			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-			}
 
 			return Ok(result.Item);
 		}
@@ -100,9 +111,19 @@ namespace ARK_Backend.Controllers
 
 			var result = await usersService.DeleteBusinessUser(contextUserId);
 			if (!result.Success)
-			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-			}
+
+			return Ok();
+		}
+
+		[HttpDelete("person-card/{personCardId}")]
+		public async Task<IActionResult> DeletePersonCard(int personCardId)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.DeletePersonCard(contextUserId, personCardId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
 			return Ok();
 		}

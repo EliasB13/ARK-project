@@ -37,6 +37,7 @@ namespace ARK_Backend
 			{
 				options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 			});
+
 			services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DevSqlServerConn")));
 			services.AddControllers();
 
@@ -113,7 +114,7 @@ namespace ARK_Backend
 					{
 						var userService = context.HttpContext.RequestServices.GetRequiredService<IBusinessUsersService>();
 						var userId = int.Parse(context.Principal.Identity.Name);
-						var user = userService.GetByIdAsync(userId);
+						var user = await userService.GetByIdAsync(userId);
 						if (user == null)
 						{
 							context.Fail("Unauthorized");
