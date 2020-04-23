@@ -97,9 +97,7 @@ namespace ARK_Backend.Controllers
 
 			var result = await usersService.UpdateBusinessUser(businessUser, contextUserId);
 			if (!result.Success)
-			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-			}
 
 			return Ok(result.Item);
 		}
