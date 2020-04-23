@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ARK_Backend.Core.Mappers
 {
-	public static class PersonCardMapper
+	public static class PersonCardsMapper
 	{
 		public static PersonCard ToPersonCard(this PersonCardDto dto)
 		{

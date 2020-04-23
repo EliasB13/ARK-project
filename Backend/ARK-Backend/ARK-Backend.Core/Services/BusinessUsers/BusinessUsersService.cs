@@ -64,7 +64,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 					PasswordSalt = passwordSalt,
 					EmployeesRoles = new List<EmployeesRole>()
 					{
-						new EmployeesRole() { IsAnonymous = true }
+						new EmployeesRole() { IsAnonymous = true },
 					}
 				};
 
