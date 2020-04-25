@@ -18,5 +18,15 @@ namespace ARK_Backend.Core.Mappers
 				IsEntrance = reader.IsEntrance
 			};
 		}
+
+		public static Reader ToReader(this ReaderDto dto)
+		{
+			return new Reader
+			{
+				Name = dto.Name,
+				Description = dto.Description,
+				IsEntrance = dto.IsEntrance,
+			};
+		}
 	}
 }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ARK_Backend.Core.Helpers;
 using ARK_Backend.Core.Services.BusinessUsers;
+using ARK_Backend.Core.Services.EmployeesRoles;
+using ARK_Backend.Core.Services.Readers;
 using ARK_Backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -169,6 +171,8 @@ namespace ARK_Backend
 		private void ConfigureInjection(IServiceCollection services)
 		{
 			services.AddScoped<IBusinessUsersService, BusinessUsersService>();
+			services.AddScoped<IEmployeesRolesService, EmployeesRolesService>();
+			services.AddScoped<IReadersService, ReadersService>();
 		}
 	}
 }

@@ -6,11 +6,13 @@ using ARK_Backend.Core.Dtos.Employee;
 using ARK_Backend.Core.Dtos.EmployeesRoles;
 using ARK_Backend.Core.Dtos.Readers;
 using ARK_Backend.Core.Services.EmployeesRoles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ARK_Backend.Controllers
 {
+	[Authorize]
     [Route("api/[controller]")]
     public class EmployeesRolesController : Controller
     {
