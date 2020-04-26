@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ARK_Backend.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200420170433_cascade_added_pc_and_employee")]
-    partial class cascade_added_pc_and_employee
+    [Migration("20200426153302_added_cascade_behaviour")]
+    partial class added_cascade_behaviour
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -224,8 +224,9 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.EmployeesRole", "EmployeesRole")
-                        .WithMany()
-                        .HasForeignKey("EmployeesRoleId");
+                        .WithMany("Employees")
+                        .HasForeignKey("EmployeesRoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "PersonCard")
                         .WithMany("Employees")
@@ -248,15 +249,17 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                         .HasForeignKey("PersonId");
 
                     b.HasOne("ARK_Backend.Domain.Entities.Reader", "Reader")
-                        .WithMany()
-                        .HasForeignKey("ReaderId");
+                        .WithMany("Observations")
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Reader", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.BusinessUser", "BusinessUser")
                         .WithMany("Readers")
-                        .HasForeignKey("BusinessUserId");
+                        .HasForeignKey("BusinessUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.RestrictedRoleReader", b =>
@@ -267,7 +270,8 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.HasOne("ARK_Backend.Domain.Entities.Reader", "Reader")
                         .WithMany("RestrictedRoleReaders")
-                        .HasForeignKey("ReaderId");
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

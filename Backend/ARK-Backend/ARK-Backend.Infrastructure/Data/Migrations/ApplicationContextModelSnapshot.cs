@@ -222,8 +222,9 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.EmployeesRole", "EmployeesRole")
-                        .WithMany()
-                        .HasForeignKey("EmployeesRoleId");
+                        .WithMany("Employees")
+                        .HasForeignKey("EmployeesRoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ARK_Backend.Domain.Entities.PersonCard", "PersonCard")
                         .WithMany("Employees")
@@ -246,15 +247,17 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
                         .HasForeignKey("PersonId");
 
                     b.HasOne("ARK_Backend.Domain.Entities.Reader", "Reader")
-                        .WithMany()
-                        .HasForeignKey("ReaderId");
+                        .WithMany("Observations")
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.Reader", b =>
                 {
                     b.HasOne("ARK_Backend.Domain.Entities.BusinessUser", "BusinessUser")
                         .WithMany("Readers")
-                        .HasForeignKey("BusinessUserId");
+                        .HasForeignKey("BusinessUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARK_Backend.Domain.Entities.RestrictedRoleReader", b =>
@@ -265,7 +268,8 @@ namespace ARK_Backend.Infrastructure.Data.Migrations
 
                     b.HasOne("ARK_Backend.Domain.Entities.Reader", "Reader")
                         .WithMany("RestrictedRoleReaders")
-                        .HasForeignKey("ReaderId");
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

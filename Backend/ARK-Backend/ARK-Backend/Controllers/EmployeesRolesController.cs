@@ -23,7 +23,7 @@ namespace ARK_Backend.Controllers
 			this.rolesService = rolesService;
 		}
 
-		[HttpGet]
+		[HttpGet("all-roles")]
 		public async Task<IActionResult> GetEmployeesRoles()
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
@@ -60,7 +60,7 @@ namespace ARK_Backend.Controllers
 		}
 
 		[HttpPost("add-role")]
-		public async Task<IActionResult> AddEmployeesRole([FromBody]EmployeesRoleDto roleDto)
+		public async Task<IActionResult> AddEmployeesRole([FromBody]AddEmployeesRoleRequest roleDto)
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -131,6 +131,7 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
+		[HttpPost("unrestrict-reader")]
 		public async Task<IActionResult> UnrestrictReaderInRole([FromBody]RestrictReaderDto dto)
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);

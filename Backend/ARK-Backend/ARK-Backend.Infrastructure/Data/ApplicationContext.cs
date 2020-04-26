@@ -32,6 +32,26 @@ namespace ARK_Backend.Infrastructure.Data
 				.HasMany(bu => bu.EmployeesRoles)
 				.WithOne(er => er.BusinessUser)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<EmployeesRole>()
+				.HasMany(er => er.Employees)
+				.WithOne(e => e.EmployeesRole)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<BusinessUser>()
+				.HasMany(bu => bu.Readers)
+				.WithOne(r => r.BusinessUser)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Reader>()
+				.HasMany(r => r.RestrictedRoleReaders)
+				.WithOne(rr => rr.Reader)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Reader>()
+				.HasMany(r => r.Observations)
+				.WithOne(o => o.Reader)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

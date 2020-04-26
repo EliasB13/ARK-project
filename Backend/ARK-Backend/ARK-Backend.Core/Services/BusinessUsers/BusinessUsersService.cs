@@ -158,6 +158,9 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 					}
 				};
 
+				string rfid = Guid.NewGuid().ToString().Substring(0, 20);
+				card.RFIDNumber = rfid;
+
 				await dbContext.PersonCards.AddAsync(card);
 				await dbContext.SaveChangesAsync();
 

@@ -64,6 +64,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				var cards = role.Employees.Select(e =>
 					new PersonCardDto
 					{
+						PersonCardId = e.PersonCard.Id,
 						Name = e.PersonCard.Name,
 						EmployeesRoleId = e.EmployeesRole.Id,
 						Surname = e.PersonCard.Surname,
@@ -86,7 +87,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			try
 			{
 				var role = await dbContext.EmployeesRoles
-				.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
+					.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
 
 				if (role == null)
 					return new GenericServiceResponse<EmployeesRoleDto>($"Business user with id: { businessUserId } doesn't have role with id: { roleId }", ErrorCode.ERROR_MOQ);
@@ -99,25 +100,27 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 		}
 
-		public async Task<GenericServiceResponse<EmployeesRoleDto>> AddEmployeesRole(int businessUserId, EmployeesRoleDto roleDto)
+		public async Task<GenericServiceResponse<AddEmployeesRoleRequest>> AddEmployeesRole(int businessUserId, AddEmployeesRoleRequest roleDto)
 		{
 			try
 			{
 				var sameNameRoleExists = await dbContext.EmployeesRoles.AnyAsync(er => er.Name == roleDto.Name);
 				if (sameNameRoleExists)
-					return new GenericServiceResponse<EmployeesRoleDto>($"Role with name: { roleDto.Name } already exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<AddEmployeesRoleRequest>($"Role with name: { roleDto.Name } already exists", ErrorCode.ERROR_MOQ);
+
+				var businessUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
 				var role = roleDto.ToRole();
-				role.BusinessUser.Id = businessUserId;
+				role.BusinessUser = businessUser;
 
 				await dbContext.EmployeesRoles.AddAsync(role);
 				await dbContext.SaveChangesAsync();
 
-				return new GenericServiceResponse<EmployeesRoleDto>(roleDto);
+				return new GenericServiceResponse<AddEmployeesRoleRequest>(roleDto);
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<EmployeesRoleDto>("Error | Adding employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<AddEmployeesRoleRequest>("Error | Adding employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
 			}
 		}
 

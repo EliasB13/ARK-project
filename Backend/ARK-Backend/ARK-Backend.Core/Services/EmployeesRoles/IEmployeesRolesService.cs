@@ -14,7 +14,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 		Task<GenericServiceResponse<IEnumerable<EmployeesRoleDto>>> GetEmployeesRoles(int businessUserId);
 		Task<GenericServiceResponse<IEnumerable<PersonCardDto>>> GetEmployeesInRole(int businessUserId, int roleId);
 		Task<GenericServiceResponse<EmployeesRoleDto>> GetEmployeesRole(int businessUserId, int roleId);
-		Task<GenericServiceResponse<EmployeesRoleDto>> AddEmployeesRole(int businessUserId, EmployeesRoleDto roleDto);
+		Task<GenericServiceResponse<AddEmployeesRoleRequest>> AddEmployeesRole(int businessUserId, AddEmployeesRoleRequest roleDto);
 		Task<GenericServiceResponse<EmployeesRoleDto>> DeleteEmployeesRole(int businessUserId, int roleId);
 		Task<GenericServiceResponse<EmployeesRoleDto>> UpdateEmployeesRole(int businessUserId, EmployeesRoleDto roleDto);
 		Task<GenericServiceResponse<PersonCardDto>> AddEmployeeToRole(int businessUserId, int roleId, int personCardId);

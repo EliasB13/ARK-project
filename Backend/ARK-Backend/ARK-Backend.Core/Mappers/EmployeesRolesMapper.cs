@@ -19,7 +19,7 @@ namespace ARK_Backend.Core.Mappers
 			};
 		}
 
-		public static EmployeesRole ToRole(this EmployeesRoleDto dto)
+		public static EmployeesRole ToRole(this AddEmployeesRoleRequest dto)
 		{
 			return new EmployeesRole
 			{

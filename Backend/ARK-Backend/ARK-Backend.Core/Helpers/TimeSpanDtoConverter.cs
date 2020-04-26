@@ -8,7 +8,7 @@ namespace ARK_Backend.Core.Helpers
 	{
 		public static string TimeSpanToString(this TimeSpan time)
 		{
-			return time.ToString("hh:mm");
+			return time.ToString("hh\\:mm");
 		}
 
 		public static TimeSpan StringToTimeSpan(this string time)

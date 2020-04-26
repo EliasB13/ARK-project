@@ -26,8 +26,10 @@ namespace ARK_Backend.Core.Services.Readers
 		{
 			try
 			{
+				var businessUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
 				var reader = dto.ToReader();
-				reader.BusinessUser.Id = businessUserId;
+				reader.BusinessUser = businessUser;
 
 				await dbContext.Readers.AddAsync(reader);
 				await dbContext.SaveChangesAsync();
@@ -86,6 +88,15 @@ namespace ARK_Backend.Core.Services.Readers
 					return new GenericServiceResponse<ObservationDto>($"Person card wasn't found", ErrorCode.ERROR_MOQ);
 
 				//TODO: Check working day if entrance
+
+				//if (reader.IsEntrance && person.IsEmployee)
+				//{
+				//	var personObs = await dbContext.Observations
+				//		.Where(o => o.Reader.ReaderId == reader.ReaderId && o.Person.Id == person.Id && o.Time.Date == DateTime.Today)
+				//		.ToListAsync();
+				//	if (personObs.Count == 0)
+
+				//}
 
 				var observation = dto.ToObservation();
 				observation.Person = person;
