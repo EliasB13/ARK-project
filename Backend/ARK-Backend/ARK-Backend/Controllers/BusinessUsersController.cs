@@ -91,7 +91,6 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
-
 		[HttpGet("person-statistic/{personId}")]
 		public async Task<IActionResult> GetPersonStatistic(int personId, DateTime lowerBound, DateTime upperBound)
 		{
