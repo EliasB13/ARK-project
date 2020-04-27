@@ -16,7 +16,6 @@ namespace ARK_Backend.Domain.Entities
 		public byte[] PasswordHash { get; set; }
 		public byte[] PasswordSalt { get; set; }
 		public bool IsEmailConfirmed { get; set; }
-		public string Photo { get; set; }
 
 		public IEnumerable<Reader> Readers { get; set; }
 		public IEnumerable<EmployeesRole> EmployeesRoles { get; set; }

@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\ProfilePics\" />
   </ItemGroup>
 
 

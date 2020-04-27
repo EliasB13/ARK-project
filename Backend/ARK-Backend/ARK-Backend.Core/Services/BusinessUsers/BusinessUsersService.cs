@@ -116,7 +116,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			return new GenericServiceResponse<BusinessUser>(dbUser);
 		}
 
-		public async Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, PersonCardDto dto)
+		public async Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, AddPersonCardRequest dto)
 		{
 			try
 			{
@@ -401,10 +401,10 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 						IsEmployee = pc.IsEmployee,
 						PersonCardId = pc.Id,
 						WorkingDayStartTime = TimeSpanDtoConverter.TimeSpanToString(pc.Employees.First().WorkingDayStartTime),
-						WorkingDayEndTime = TimeSpanDtoConverter.TimeSpanToString(pc.Employees.First().WorkingDayEndTime)
+						WorkingDayEndTime = TimeSpanDtoConverter.TimeSpanToString(pc.Employees.First().WorkingDayEndTime),
+						Photo = pc.Photo
 					})
 					.ToListAsync();
-
 
 				return new GenericServiceResponse<IEnumerable<PersonCardDto>>(persons);
 			}

@@ -67,7 +67,8 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 						Surname = e.PersonCard.Surname,
 						IsEmployee = e.PersonCard.IsEmployee,
 						WorkingDayStartTime = TimeSpanDtoConverter.TimeSpanToString(e.WorkingDayStartTime),
-						WorkingDayEndTime = TimeSpanDtoConverter.TimeSpanToString(e.WorkingDayEndTime)
+						WorkingDayEndTime = TimeSpanDtoConverter.TimeSpanToString(e.WorkingDayEndTime),
+						Photo = e.PersonCard.Photo
 					}
 				).ToList();
 

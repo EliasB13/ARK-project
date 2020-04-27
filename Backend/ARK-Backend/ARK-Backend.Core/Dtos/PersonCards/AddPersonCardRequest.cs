@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ARK_Backend.Core.Dtos.PersonCards
 {
-	public class PersonCardDto
+	public class AddPersonCardRequest
 	{
 		public int PersonCardId { get; set; }
 		public string Name { get; set; }
@@ -13,6 +13,5 @@ namespace ARK_Backend.Core.Dtos.PersonCards
 		public int? EmployeesRoleId { get; set; }
 		public string WorkingDayStartTime { get; set; }
 		public string WorkingDayEndTime { get; set; }
-		public string Photo { get; set; }
 	}
 }

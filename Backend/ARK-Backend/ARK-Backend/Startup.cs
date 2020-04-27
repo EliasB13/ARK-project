@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,14 +9,17 @@ using ARK_Backend.Core.Services.BusinessUsers;
 using ARK_Backend.Core.Services.EmployeesRoles;
 using ARK_Backend.Core.Services.Readers;
 using ARK_Backend.Infrastructure.Data;
+using ARK_Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -89,6 +93,12 @@ namespace ARK_Backend
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+			});
+
+			app.UseStaticFiles(new StaticFileOptions()
+			{
+				FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+				RequestPath = new PathString("/Resources")
 			});
 
 			app.UseSwagger();
@@ -176,6 +186,7 @@ namespace ARK_Backend
 			services.AddScoped<IBusinessUsersService, BusinessUsersService>();
 			services.AddScoped<IEmployeesRolesService, EmployeesRolesService>();
 			services.AddScoped<IReadersService, ReadersService>();
+			services.AddScoped<IImageService, ImageService>();
 		}
 	}
 }

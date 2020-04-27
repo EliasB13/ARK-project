@@ -18,8 +18,7 @@ namespace ARK_Backend.Core.Mappers
 				Email = user.Email,
 				Id = user.Id,
 				Login = user.Login,
-				Phone = user.Phone,
-				Photo = user.Photo
+				Phone = user.Phone
 			};
 		}
 

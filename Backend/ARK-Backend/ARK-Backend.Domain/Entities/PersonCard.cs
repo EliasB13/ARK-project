@@ -13,6 +13,7 @@ namespace ARK_Backend.Domain.Entities
 		[MaxLength(20)]
 		public string RFIDNumber { get; set; }
 		public bool IsEmployee { get; set; }
+		public string Photo { get; set; }
 
 		public IEnumerable<Employee> Employees { get; set; }
 	}

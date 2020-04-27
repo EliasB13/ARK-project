@@ -20,7 +20,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		Task<GenericServiceResponse<BusinessUserAccountData>> UpdateBusinessUser(UpdateBusinessUserRequest editData, int businessUserId);
 		Task<GenericServiceResponse<BusinessUser>> DeleteBusinessUser(int businessUserId);
 		Task<GenericServiceResponse<BusinessUserAccountData>> GetAccountData(int id);
-		Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, PersonCardDto personCard);
+		Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, AddPersonCardRequest personCard);
 		Task<GenericServiceResponse<PersonCardDto>> DeletePersonCard(int businessUserId, int personCardId);
 		Task<GenericServiceResponse<IEnumerable<ReaderStatisticDto>>> GetFullStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound);
 		Task<GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>> GetFullCountStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound);

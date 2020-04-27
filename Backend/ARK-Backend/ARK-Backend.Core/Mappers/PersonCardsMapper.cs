@@ -8,7 +8,7 @@ namespace ARK_Backend.Core.Mappers
 {
 	public static class PersonCardsMapper
 	{
-		public static PersonCard ToPersonCard(this PersonCardDto dto)
+		public static PersonCard ToPersonCard(this AddPersonCardRequest dto)
 		{
 			return new PersonCard
 			{
@@ -24,7 +24,8 @@ namespace ARK_Backend.Core.Mappers
 			{
 				Name = card.Name,
 				Surname = card.Surname,
-				IsEmployee = card.IsEmployee
+				IsEmployee = card.IsEmployee,
+				Photo = card.Photo
 			};
 		}
 	}

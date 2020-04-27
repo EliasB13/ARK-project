@@ -10,7 +10,9 @@ using ARK_Backend.Core.Dtos.BusinessUsers;
 using ARK_Backend.Core.Dtos.PersonCards;
 using ARK_Backend.Core.Helpers;
 using ARK_Backend.Core.Services.BusinessUsers;
+using ARK_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,12 +25,15 @@ namespace ARK_Backend.Controllers
 	{
 		private readonly IBusinessUsersService usersService;
 		private readonly AppSettings appSettings;
+		private readonly IImageService imageService;
 
 		public BusinessUsersController(IBusinessUsersService usersService,
-			IOptions<AppSettings> appSettings)
+			IOptions<AppSettings> appSettings,
+			IImageService imageService)
 		{
 			this.appSettings = appSettings.Value;
 			this.usersService = usersService;
+			this.imageService = imageService;
 		}
 
 		[HttpGet("account-data")]
@@ -132,8 +137,7 @@ namespace ARK_Backend.Controllers
 			{
 				Id = user.Id,
 				Login = user.Login,
-				Token = token,
-				Photo = user.Photo
+				Token = token
 			});
 		}
 
@@ -149,7 +153,7 @@ namespace ARK_Backend.Controllers
 		}
 
 		[HttpPost("add-person-card")]
-		public async Task<IActionResult> AddPersonCard([FromBody]PersonCardDto dto)
+		public async Task<IActionResult> AddPersonCard([FromBody]AddPersonCardRequest dto)
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -158,6 +162,18 @@ namespace ARK_Backend.Controllers
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
 			return Ok(result.Item);
+		}
+
+		[HttpPost("upload-card-picture/{personCardId}")]
+		public async Task<IActionResult> UploadPersonCardPhoto(IFormFile file, int personCardId)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await imageService.UploadCardPicture(file, personCardId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok();
 		}
 
 		[HttpPut]
