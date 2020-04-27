@@ -1,6 +1,7 @@
 ﻿using ARK_Backend.Core.Dtos.Auth;
 using ARK_Backend.Core.Dtos.BusinessUsers;
 using ARK_Backend.Core.Dtos.PersonCards;
+using ARK_Backend.Core.Dtos.Statistics;
 using ARK_Backend.Core.Services.Communication;
 using ARK_Backend.Domain.Entities;
 using System;
@@ -20,5 +21,8 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		Task<GenericServiceResponse<BusinessUserAccountData>> GetAccountData(int id);
 		Task<GenericServiceResponse<PersonCardDto>> AddPersonCard(int businessUserId, PersonCardDto personCard);
 		Task<GenericServiceResponse<PersonCardDto>> DeletePersonCard(int businessUserId, int personCardId);
+		Task<GenericServiceResponse<IEnumerable<ReaderStatisticDto>>> GetFullStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound);
+		Task<GenericServiceResponse<ReaderStatisticDto>> GetReaderStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound);
+		Task<GenericServiceResponse<PersonCardStatisticDto>> GetPersonStatistic(int businessUserId, int personId, DateTime lowerBound, DateTime upperBound);
 	}
 }

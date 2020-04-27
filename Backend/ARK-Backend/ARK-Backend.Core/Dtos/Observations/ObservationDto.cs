@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ARK_Backend.Core.Dtos.Observation
+namespace ARK_Backend.Core.Dtos.Observations
 {
 	public class ObservationDto
 	{

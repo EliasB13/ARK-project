@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace ARK_Backend
 {
@@ -74,6 +75,8 @@ namespace ARK_Backend
 			}
 
 			app.UseRouting();
+
+			app.UseSerilogRequestLogging();
 
 			app.UseCors("CorsPolicy");
 

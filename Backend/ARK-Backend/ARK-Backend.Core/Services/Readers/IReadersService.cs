@@ -1,4 +1,4 @@
-﻿using ARK_Backend.Core.Dtos.Observation;
+﻿using ARK_Backend.Core.Dtos.Observations;
 using ARK_Backend.Core.Dtos.Readers;
 using ARK_Backend.Core.Services.Communication;
 using System;

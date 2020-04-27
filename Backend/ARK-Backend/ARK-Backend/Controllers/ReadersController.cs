@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ARK_Backend.Core.Dtos.Observation;
+using ARK_Backend.Core.Dtos.Observations;
 using ARK_Backend.Core.Dtos.Readers;
 using ARK_Backend.Core.Services.Readers;
 using Microsoft.AspNetCore.Authorization;

@@ -1,4 +1,5 @@
 ﻿using ARK_Backend.Core.Helpers;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,7 @@ namespace ARK_Backend.Core.Services.Communication
 		public GenericServiceResponse(string errorMessage, ErrorCode errorCode) : this(null, false, errorMessage)
 		{
 			ErrorCode = errorCode;
+			Log.Logger.Error(errorMessage);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using ARK_Backend.Core.Dtos.Observation;
+﻿using ARK_Backend.Core.Dtos.Observations;
 using ARK_Backend.Domain.Entities;
 using System;
 using System.Collections.Generic;
