@@ -13,6 +13,6 @@ namespace ARK_Backend.Core.Services.Readers
 		Task<GenericServiceResponse<IEnumerable<ReaderDto>>> GetAllReaders(int businessUserId);
 		Task<GenericServiceResponse<ReaderDto>> AddReader(int businessUserId, ReaderDto dto);
 		Task<GenericServiceResponse<ReaderDto>> RemoveReader(int businessUserId, int readerId);
-		Task<GenericServiceResponse<ObservationDto>> Observe(ObservationDto dto);
+		Task<GenericServiceResponse<ObservationResponse>> Observe(ObservationDto dto);
 	}
 }

@@ -58,9 +58,6 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				if (role.BusinessUser.Id != businessUserId)
 					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } doesn't belong to business user with id: { businessUserId }", ErrorCode.ROLE_DOESNT_BELONG_TO_BUSINESS_USER);
 
-				if (role.IsAnonymous)
-					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } is anonymous", ErrorCode.ROLE_IS_ANONYMOUS);
-
 				var cards = role.Employees.Select(e =>
 					new PersonCardDto
 					{
@@ -180,6 +177,9 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				if (isEmployeeExists)
 					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } already exists", ErrorCode.EMPLOYEE_ALREADY_EXISTS);
 
+				if (!personCard.IsEmployee)
+					return new GenericServiceResponse<PersonCardDto>($"Person card is not an employee", ErrorCode.PERSON_NOT_EMPLOYEE);
+
 				var employee = personCard.Employees.FirstOrDefault();
 				employee.EmployeesRole = role;
 
@@ -209,6 +209,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				var isEmployeeExists = await dbContext.PersonCards.AnyAsync(pc => pc.Id == personCardId && !pc.Employees.Any(e => e.EmployeesRole.Id == roleId));
 				if (isEmployeeExists)
 					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } doesn't exists", ErrorCode.EMPLOYEE_NOT_FOUND);
+
 
 				var employee = personCard.Employees.SingleOrDefault(pc => pc.EmployeesRole.Id == role.Id);
 				var unassignedRole = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.IsAnonymous);

@@ -53,7 +53,7 @@ namespace ARK_Backend.Controllers
 			if (!result.Success)
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
-			return Ok();
+			return Ok(result.Item);
 		}
 
 		[HttpDelete("reader/{readerId}")]

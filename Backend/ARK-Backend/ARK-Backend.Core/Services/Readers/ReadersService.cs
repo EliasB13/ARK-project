@@ -75,41 +75,43 @@ namespace ARK_Backend.Core.Services.Readers
 			}
 		}
 
-		public async Task<GenericServiceResponse<ObservationDto>> Observe(ObservationDto dto)
+		public async Task<GenericServiceResponse<ObservationResponse>> Observe(ObservationDto dto)
 		{
 			try
 			{
 				var reader = await dbContext.Readers.Include(r => r.BusinessUser).SingleOrDefaultAsync(r => r.ReaderId == dto.ReaderId);
 				if (reader == null)
-					return new GenericServiceResponse<ObservationDto>($"Reader with id wasn't found: { dto.ReaderId }", ErrorCode.READER_NOT_FOUND);
+					return new GenericServiceResponse<ObservationResponse>($"Reader with id wasn't found: { dto.ReaderId }", ErrorCode.READER_NOT_FOUND);
 
-				var person = await dbContext.PersonCards.SingleOrDefaultAsync(pc => pc.RFIDNumber == dto.PersonCardRfid);
-				if (person == null)
-					return new GenericServiceResponse<ObservationDto>($"Person card wasn't found", ErrorCode.PERSON_CARD_NOT_FOUND);
+				var person = await dbContext.PersonCards
+					.Include(pc => pc.Employees)
+						.ThenInclude(e => e.EmployeesRole)
+					.SingleOrDefaultAsync(pc => pc.RFIDNumber == dto.PersonCardRfid);
+				if (person == null) 
+					return new GenericServiceResponse<ObservationResponse>($"Person card wasn't found", ErrorCode.PERSON_CARD_NOT_FOUND);
 
-				//TODO: Check working day if entrance
-
-				//if (reader.IsEntrance && person.IsEmployee)
-				//{
-				//	var personObs = await dbContext.Observations
-				//		.Where(o => o.Reader.ReaderId == reader.ReaderId && o.Person.Id == person.Id && o.Time.Date == DateTime.Today)
-				//		.ToListAsync();
-				//	if (personObs.Count == 0)
-
-				//}
+				var personRoles = person.Employees.Select(e => e.EmployeesRole.Id);
+				var isRestricted = await dbContext.RestrictedRoleReaders
+					.AnyAsync(rrr => rrr.Reader.ReaderId == dto.ReaderId && personRoles.Contains(rrr.EmployeesRole.Id));
 
 				var observation = dto.ToObservation();
 				observation.Person = person;
 				observation.Reader = reader;
+				observation.IsRestricted = isRestricted;
 
 				await dbContext.Observations.AddAsync(observation);
 				await dbContext.SaveChangesAsync();
 
-				return new GenericServiceResponse<ObservationDto>(dto);
+				var response = new ObservationResponse
+				{
+					IsRestricted = isRestricted
+				};
+
+				return new GenericServiceResponse<ObservationResponse>(response);
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ObservationDto>("Error | Saving observe: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
+				return new GenericServiceResponse<ObservationResponse>("Error | Saving observe: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 

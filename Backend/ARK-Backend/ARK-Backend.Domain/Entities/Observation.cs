@@ -8,6 +8,7 @@ namespace ARK_Backend.Domain.Entities
 	{
 		public int Id { get; set; }
 		public DateTime Time { get; set; }
+		public bool IsRestricted { get; set; }
 
 		public PersonCard Person { get; set; }
 		public Reader Reader { get; set; }
