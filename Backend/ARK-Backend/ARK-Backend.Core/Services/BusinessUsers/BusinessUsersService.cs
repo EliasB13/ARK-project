@@ -224,6 +224,38 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 		}
 
+		public async Task<GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>> GetFullCountStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound)
+		{
+			try
+			{
+				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
+					return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+
+				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
+				var readersDto = await dbContext.Readers
+					.Include(r => r.Observations)
+						.ThenInclude(o => o.Person)
+					.Where(r => r.BusinessUser.Id == businessUserId)
+					.Select(r =>
+						new ReaderCountStatisticDto
+						{
+							Id = r.ReaderId,
+							Description = r.Description,
+							IsEntrance = r.IsEntrance,
+							Name = r.Name,
+							EmployeesObservationsCount = r.Observations.Where(o => o.Time <= upperBound && o.Time >= lowerBound && o.Person.IsEmployee).Count(),
+							AnonymObservationsCount = r.Observations.Where(o => o.Time <= upperBound && o.Time >= lowerBound && !o.Person.IsEmployee).Count()
+						}).ToListAsync();
+
+				return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>(readersDto);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>("Error | Getting full count statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
+		}
+
 		public async Task<GenericServiceResponse<ReaderStatisticDto>> GetReaderStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound)
 		{
 			try
@@ -260,6 +292,52 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			catch (Exception ex)
 			{
 				return new GenericServiceResponse<ReaderStatisticDto>("Error | Getting reader statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
+		}
+
+		public async Task<GenericServiceResponse<ReaderCountStatisticDto>> GetReaderCountStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound)
+		{
+			try
+			{
+				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
+					return new GenericServiceResponse<ReaderCountStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+
+				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
+				var reader = await dbContext.Readers
+					.Include(r => r.Observations)
+						.ThenInclude(o => o.Person)
+					.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
+				if (reader == null)
+					return new GenericServiceResponse<ReaderCountStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+
+				var dto = new ReaderCountStatisticDto
+				{
+					Id = reader.ReaderId,
+					Name = reader.Name,
+					Description = reader.Description,
+					IsEntrance = reader.IsEntrance,
+					EmployeesObservationsCount = reader.Observations
+						.Where(o => o.Time <= upperBound && o.Time >= lowerBound && o.Person.IsEmployee)
+						.Select(o =>
+						{
+							o.Reader = null;
+							return o;
+						}).Count(),
+					AnonymObservationsCount = reader.Observations
+						.Where(o => o.Time <= upperBound && o.Time >= lowerBound && !o.Person.IsEmployee)
+						.Select(o =>
+						{
+							o.Reader = null;
+							return o;
+						}).Count()
+				};
+
+				return new GenericServiceResponse<ReaderCountStatisticDto>(dto);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<ReaderCountStatisticDto>("Error | Getting reader count statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
 			}
 		}
 

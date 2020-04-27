@@ -56,7 +56,7 @@ namespace ARK_Backend.Controllers
 		}
 
 		[HttpGet("reader-statistic/{readerId}")]
-		public async Task<IActionResult> GetFullStatistic(int readerId, DateTime lowerBound, DateTime upperBound)
+		public async Task<IActionResult> GetReaderStatistic(int readerId, DateTime lowerBound, DateTime upperBound)
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -66,6 +66,31 @@ namespace ARK_Backend.Controllers
 
 			return Ok(result.Item);
 		}
+
+		[HttpGet("full-count-statistic")]
+		public async Task<IActionResult> GetFullCountStatistic(DateTime lowerBound, DateTime upperBound)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetFullCountStatistic(contextUserId, lowerBound, upperBound);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
+		[HttpGet("reader-count-statistic/{readerId}")]
+		public async Task<IActionResult> GetReaderCountStatistic(int readerId, DateTime lowerBound, DateTime upperBound)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetReaderCountStatistic(contextUserId, readerId, lowerBound, upperBound);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
 
 		[HttpGet("person-statistic/{personId}")]
 		public async Task<IActionResult> GetPersonStatistic(int personId, DateTime lowerBound, DateTime upperBound)
