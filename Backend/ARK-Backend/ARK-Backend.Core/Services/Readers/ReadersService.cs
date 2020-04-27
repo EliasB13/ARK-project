@@ -38,7 +38,7 @@ namespace ARK_Backend.Core.Services.Readers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderDto>("Error | Adding reader: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderDto>("Error | Adding reader: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -48,14 +48,14 @@ namespace ARK_Backend.Core.Services.Readers
 			{
 				var readers = await dbContext.Readers.Where(r => r.BusinessUser.Id == businessUserId).ToListAsync();
 				if (readers.Count == 0)
-					return new GenericServiceResponse<IEnumerable<ReaderDto>>($"Readers were not found with business user id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<ReaderDto>>(new List<ReaderDto>());
 
 				var readerDtos = readers.Select(r => r.ToDto());
 				return new GenericServiceResponse<IEnumerable<ReaderDto>>(readerDtos);
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<ReaderDto>> ("Error | Getting all readers: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<IEnumerable<ReaderDto>> ("Error | Getting all readers: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -65,13 +65,13 @@ namespace ARK_Backend.Core.Services.Readers
 			{
 				var reader = await dbContext.Readers.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderDto>($"Business user with id: { businessUserId } doesn't have reader with id: { readerId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Business user with id: { businessUserId } doesn't have reader with id: { readerId }", ErrorCode.READER_NOT_FOUND);
 
 				return new GenericServiceResponse<ReaderDto>(reader.ToDto());
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -81,11 +81,11 @@ namespace ARK_Backend.Core.Services.Readers
 			{
 				var reader = await dbContext.Readers.Include(r => r.BusinessUser).SingleOrDefaultAsync(r => r.ReaderId == dto.ReaderId);
 				if (reader == null)
-					return new GenericServiceResponse<ObservationDto>($"Reader with id wasn't found: { dto.ReaderId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ObservationDto>($"Reader with id wasn't found: { dto.ReaderId }", ErrorCode.READER_NOT_FOUND);
 
 				var person = await dbContext.PersonCards.SingleOrDefaultAsync(pc => pc.RFIDNumber == dto.PersonCardRfid);
 				if (person == null)
-					return new GenericServiceResponse<ObservationDto>($"Person card wasn't found", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ObservationDto>($"Person card wasn't found", ErrorCode.PERSON_CARD_NOT_FOUND);
 
 				//TODO: Check working day if entrance
 
@@ -109,7 +109,7 @@ namespace ARK_Backend.Core.Services.Readers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ObservationDto>("Error | Saving observe: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ObservationDto>("Error | Saving observe: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace ARK_Backend.Core.Services.Readers
 			{
 				var reader = await dbContext.Readers.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderDto>($"Business user with id: { businessUserId } doesn't have reader with id: { readerId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Business user with id: { businessUserId } doesn't have reader with id: { readerId }", ErrorCode.READER_NOT_FOUND);
 
 				dbContext.Readers.Remove(reader);
 				await dbContext.SaveChangesAsync();
@@ -128,7 +128,7 @@ namespace ARK_Backend.Core.Services.Readers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 	}

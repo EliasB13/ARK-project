@@ -110,7 +110,7 @@ namespace ARK_Backend.Controllers
 			var result = await usersService.AuthenticateBusinessAsync(dto.Login, dto.Password);
 
 			if (!result.Success)
-				return BadRequest(new { message = result.ErrorMessage, code = ErrorCode.ERROR_MOQ });
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
 			var user = result.Item;
 

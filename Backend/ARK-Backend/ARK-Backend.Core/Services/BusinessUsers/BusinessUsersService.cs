@@ -31,16 +31,16 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 				var user = await dbContext.BusinessUsers.SingleOrDefaultAsync(u => u.Login == login);
 
 				if (user == null)
-					return new GenericServiceResponse<BusinessUser>($"User: { login } wasn't found", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<BusinessUser>($"User: { login } wasn't found", ErrorCode.USER_NOT_FOUND);
 
 				if (!HashingExtensions.VerifyHash(password, user.PasswordHash, user.PasswordSalt))
-					return new GenericServiceResponse<BusinessUser>($"Wrong credentials", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<BusinessUser>($"Wrong credentials", ErrorCode.WRONG_CREDENTIALS);
 
 				return new GenericServiceResponse<BusinessUser>(user);
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<BusinessUser>("Error | Authenticating: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<BusinessUser>("Error | Authenticating: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -49,10 +49,10 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (await dbContext.BusinessUsers.AnyAsync(x => x.Login == userDto.Login))
-					return new GenericServiceResponse<BusinessUser>("Username \"" + userDto.Login + "\" is already taken", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<BusinessUser>("Username \"" + userDto.Login + "\" is already taken", ErrorCode.USERNAME_IS_TAKEN);
 
 				if (await dbContext.BusinessUsers.AnyAsync(x => x.Email == userDto.Email))
-					return new GenericServiceResponse<BusinessUser>("Email \"" + userDto.Email + "\" is already taken", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<BusinessUser>("Email \"" + userDto.Email + "\" is already taken", ErrorCode.EMAIL_IS_TAKEN);
 
 				byte[] passwordHash, passwordSalt;
 				HashingExtensions.CreateHash(userDto.Password, out passwordHash, out passwordSalt);
@@ -77,7 +77,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<BusinessUser>("Error | Registering business user: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<BusinessUser>("Error | Registering business user: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -129,20 +129,20 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 				if (dto.IsEmployee)
 				{
 					if (!dto.EmployeesRoleId.HasValue || dto.WorkingDayStartTime == null || dto.WorkingDayEndTime == null)
-						return new GenericServiceResponse<PersonCardDto>($"Wrong params", ErrorCode.ERROR_MOQ);
+						return new GenericServiceResponse<PersonCardDto>($"Wrong params", ErrorCode.WRONG_PARAMS);
 
 					emplRole = await dbContext.EmployeesRoles.FindAsync(dto.EmployeesRoleId.Value);
 					if (emplRole == null)
-						return new GenericServiceResponse<PersonCardDto>($"Employees role with id: { dto.EmployeesRoleId.Value } wasn't found", ErrorCode.ERROR_MOQ);
+						return new GenericServiceResponse<PersonCardDto>($"Employees role with id: { dto.EmployeesRoleId.Value } wasn't found", ErrorCode.ROLE_NOT_FOUND);
 
 					if (!TimeSpan.TryParse(dto.WorkingDayStartTime, out startsAt) || !TimeSpan.TryParse(dto.WorkingDayEndTime, out endsAt))
-						return new GenericServiceResponse<PersonCardDto>("Wrong working day bounds", ErrorCode.ERROR_MOQ);
+						return new GenericServiceResponse<PersonCardDto>("Wrong working day bounds", ErrorCode.WRONG_WORKING_DAY_BOUNDS);
 				}
 				else
 				{
 					emplRole = await dbContext.EmployeesRoles.SingleAsync(er => er.BusinessUser.Id == bUser.Id && er.IsAnonymous);
 					if (emplRole == null)
-						return new GenericServiceResponse<PersonCardDto>($"Anonymous employees role wasn't found", ErrorCode.ERROR_MOQ);
+						return new GenericServiceResponse<PersonCardDto>($"Anonymous employees role wasn't found", ErrorCode.ANONYMOUS_EMPLOYEES_ROLE_NOT_FOUND);
 
 					startsAt = new TimeSpan();
 					endsAt = new TimeSpan();
@@ -170,7 +170,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -180,7 +180,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			{
 				var personCard = await dbContext.PersonCards.FindAsync(personCardId);
 				if (personCard == null)
-					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } wasn't found", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } wasn't found", ErrorCode.PERSON_CARD_NOT_FOUND);
 
 				dbContext.PersonCards.Remove(personCard);
 				await dbContext.SaveChangesAsync();
@@ -189,7 +189,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<PersonCardDto>("Error | Adding person card to business: " + ex.Message, ErrorCode.PERSON_CARD_NOT_FOUND);
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
-					return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>($"You should pass time bounds", ErrorCode.WRONG_TIME_BOUNDS);
 
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
@@ -220,7 +220,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>("Error | Getting full statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>("Error | Getting full statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -229,7 +229,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
-					return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>($"You should pass time bounds", ErrorCode.WRONG_TIME_BOUNDS);
 
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
@@ -252,7 +252,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>("Error | Getting full count statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>("Error | Getting full count statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
-					return new GenericServiceResponse<ReaderStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderStatisticDto>($"You should pass time bounds", ErrorCode.WRONG_TIME_BOUNDS);
 
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
@@ -270,7 +270,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 						.ThenInclude(o => o.Person)
 					.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
 				var dto = new ReaderStatisticDto
 				{
@@ -291,7 +291,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderStatisticDto>("Error | Getting reader statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderStatisticDto>("Error | Getting reader statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -300,7 +300,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
-					return new GenericServiceResponse<ReaderCountStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderCountStatisticDto>($"You should pass time bounds", ErrorCode.WRONG_TIME_BOUNDS);
 
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
@@ -309,7 +309,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 						.ThenInclude(o => o.Person)
 					.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderCountStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderCountStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
 				var dto = new ReaderCountStatisticDto
 				{
@@ -337,7 +337,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderCountStatisticDto>("Error | Getting reader count statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderCountStatisticDto>("Error | Getting reader count statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -346,13 +346,13 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			try
 			{
 				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
-					return new GenericServiceResponse<PersonCardStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardStatisticDto>($"You should pass time bounds", ErrorCode.WRONG_TIME_BOUNDS);
 
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
 				var person = await dbContext.PersonCards.SingleOrDefaultAsync(p => p.Id == personId && p.Employees.Any(e => e.EmployeesRole.BusinessUser.Id == businessUserId));
 				if (person == null)
-					return new GenericServiceResponse<PersonCardStatisticDto>($"Person card with id: { personId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardStatisticDto>($"Person card with id: { personId } wasn't found in business user with id: { businessUserId }", ErrorCode.PERSON_CARD_NOT_FOUND);
 
 				var readers = await dbContext.Readers
 					.Include(r => r.Observations)
@@ -380,7 +380,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<PersonCardStatisticDto>("Error | Getting person card statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<PersonCardStatisticDto>("Error | Getting person card statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 	}

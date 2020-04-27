@@ -30,7 +30,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var roles = await dbContext.EmployeesRoles.Where(er => er.BusinessUser.Id == businessUserId).ToListAsync();
 				if (roles.Count == 0)
-					return new GenericServiceResponse<IEnumerable<EmployeesRoleDto>>($"Roles were not found with business user id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<EmployeesRoleDto>>(new List<EmployeesRoleDto>());
 
 				var roleDtos = roles.Select(r => r.ToDto());
 
@@ -38,7 +38,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<EmployeesRoleDto>>("Error | Get employees roles: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<IEnumerable<EmployeesRoleDto>>("Error | Get employees roles: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		} 
 
@@ -53,13 +53,13 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				.SingleOrDefaultAsync(er => er.Id == roleId);
 
 				if (role == null)
-					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } weren't found", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } weren't found", ErrorCode.ROLE_NOT_FOUND);
 
 				if (role.BusinessUser.Id != businessUserId)
-					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } doesn't belong to business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } doesn't belong to business user with id: { businessUserId }", ErrorCode.ROLE_DOESNT_BELONG_TO_BUSINESS_USER);
 
 				if (role.IsAnonymous)
-					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } is anonymous", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<IEnumerable<PersonCardDto>>($"Role with id: { roleId } is anonymous", ErrorCode.ROLE_IS_ANONYMOUS);
 
 				var cards = role.Employees.Select(e =>
 					new PersonCardDto
@@ -78,7 +78,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<PersonCardDto>>("Error | Get employees in role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<IEnumerable<PersonCardDto>>("Error | Get employees in role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -90,13 +90,13 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 					.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
 
 				if (role == null)
-					return new GenericServiceResponse<EmployeesRoleDto>($"Business user with id: { businessUserId } doesn't have role with id: { roleId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<EmployeesRoleDto>($"Business user with id: { businessUserId } doesn't have role with id: { roleId }", ErrorCode.ROLE_DOESNT_BELONG_TO_BUSINESS_USER);
 
 				return new GenericServiceResponse<EmployeesRoleDto>(role.ToDto());
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<EmployeesRoleDto>("Error | Get employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<EmployeesRoleDto>("Error | Get employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var sameNameRoleExists = await dbContext.EmployeesRoles.AnyAsync(er => er.Name == roleDto.Name);
 				if (sameNameRoleExists)
-					return new GenericServiceResponse<AddEmployeesRoleRequest>($"Role with name: { roleDto.Name } already exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<AddEmployeesRoleRequest>($"Role with name: { roleDto.Name } already exists", ErrorCode.ROLE_ALREADY_EXISTS);
 
 				var businessUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
@@ -120,7 +120,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<AddEmployeesRoleRequest>("Error | Adding employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<AddEmployeesRoleRequest>("Error | Adding employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var role = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
 				if (role == null)
-					return new GenericServiceResponse<EmployeesRoleDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<EmployeesRoleDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ROLE_NOT_FOUND);
 
 				dbContext.EmployeesRoles.Remove(role);
 				await dbContext.SaveChangesAsync();
@@ -139,7 +139,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<EmployeesRoleDto>("Error | Deleting employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<EmployeesRoleDto>("Error | Deleting employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var role = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.Id == updateDto.Id && er.BusinessUser.Id == businessUserId);
 				if (role == null)
-					return new GenericServiceResponse<EmployeesRoleDto>($"Role with id: { updateDto.Id } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<EmployeesRoleDto>($"Role with id: { updateDto.Id } doesn't exists", ErrorCode.ROLE_NOT_FOUND);
 
 				role.UpdateFromDto(updateDto);
 
@@ -160,7 +160,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<EmployeesRoleDto>("Error | Updating employees role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<EmployeesRoleDto>("Error | Updating employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -170,15 +170,15 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var personCard = await dbContext.PersonCards.Include(pc => pc.Employees).ThenInclude(e => e.EmployeesRole).SingleOrDefaultAsync(pc => pc.Id == personCardId);
 				if (personCard == null)
-					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } doesn't exists", ErrorCode.PERSON_CARD_NOT_FOUND);
 
 				var role = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
 				if (role == null)
-					return new GenericServiceResponse<PersonCardDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ROLE_NOT_FOUND);
 
 				var isEmployeeExists = await dbContext.PersonCards.AnyAsync(pc => pc.Id == personCardId && pc.Employees.Any(e => e.EmployeesRole.Id == roleId));
 				if (isEmployeeExists)
-					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } already exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } already exists", ErrorCode.EMPLOYEE_ALREADY_EXISTS);
 
 				var employee = personCard.Employees.FirstOrDefault();
 				employee.EmployeesRole = role;
@@ -190,7 +190,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<PersonCardDto>("Error | Adding employee to role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<PersonCardDto>("Error | Adding employee to role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -200,15 +200,15 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var personCard = await dbContext.PersonCards.Include(pc => pc.Employees).ThenInclude(e => e.EmployeesRole).SingleOrDefaultAsync(pc => pc.Id == personCardId);
 				if (personCard == null)
-					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Person card with id: { personCardId } doesn't exists", ErrorCode.PERSON_CARD_NOT_FOUND);
 
 				var role = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.Id == roleId && er.BusinessUser.Id == businessUserId);
 				if (role == null)
-					return new GenericServiceResponse<PersonCardDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Role with id: { roleId } doesn't exists", ErrorCode.ROLE_NOT_FOUND);
 
 				var isEmployeeExists = await dbContext.PersonCards.AnyAsync(pc => pc.Id == personCardId && !pc.Employees.Any(e => e.EmployeesRole.Id == roleId));
 				if (isEmployeeExists)
-					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } doesn't exists", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardDto>($"Employee with person card id: { personCardId } in role with: { roleId } doesn't exists", ErrorCode.EMPLOYEE_NOT_FOUND);
 
 				var employee = personCard.Employees.SingleOrDefault(pc => pc.EmployeesRole.Id == role.Id);
 				var unassignedRole = await dbContext.EmployeesRoles.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.IsAnonymous);
@@ -221,7 +221,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<PersonCardDto>("Error | Removing employee to role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<PersonCardDto>("Error | Removing employee to role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -231,14 +231,14 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var reader = await dbContext.Readers.SingleOrDefaultAsync(r => r.BusinessUser.Id == businessUserId && r.ReaderId == readerId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
 				var role = await dbContext.EmployeesRoles.Include(er => er.RestrictedRoleReaders).SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
 				if (role == null)
-					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
 
 				if (role.RestrictedRoleReaders.Any(rrr => rrr.Reader.ReaderId == readerId))
-					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } already restricted for role with id: { roleId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } already restricted for role with id: { roleId }", ErrorCode.READER_ALREADY_RESTRICTED);
 
 				var rrr = new RestrictedRoleReader
 				{
@@ -253,7 +253,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderDto>("Error | Restricting reader for role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderDto>("Error | Restricting reader for role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 
@@ -263,15 +263,15 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			{
 				var reader = await dbContext.Readers.SingleOrDefaultAsync(r => r.BusinessUser.Id == businessUserId && r.ReaderId == readerId);
 				if (reader == null)
-					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
 				var role = await dbContext.EmployeesRoles.Include(er => er.RestrictedRoleReaders).SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
 				if (role == null)
-					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
 
 				var rrr = await dbContext.RestrictedRoleReaders.SingleOrDefaultAsync(rrr => rrr.Reader.ReaderId == readerId && rrr.EmployeesRole.Id == role.Id);
 				if (rrr == null)
-					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } is not restricted in role with id: { roleId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } is not restricted in role with id: { roleId }", ErrorCode.READER_NOT_RESTRICTED);
 
 				dbContext.RestrictedRoleReaders.Remove(rrr);
 				await dbContext.SaveChangesAsync();
@@ -280,7 +280,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<ReaderDto>("Error | Unrestricting reader for role: " + ex.Message, ErrorCode.ERROR_MOQ);
+				return new GenericServiceResponse<ReaderDto>("Error | Unrestricting reader for role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 	}
