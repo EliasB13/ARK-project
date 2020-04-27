@@ -284,5 +284,30 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				return new GenericServiceResponse<ReaderDto>("Error | Unrestricting reader for role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
+
+		public async Task<GenericServiceResponse<IEnumerable<RestrictReaderDto>>> GetRestrictedRoleReaders(int businessUserId, int roleId)
+		{
+			try
+			{
+				var role = await dbContext.EmployeesRoles
+					.Include(er => er.RestrictedRoleReaders)
+						.ThenInclude(er => er.Reader)
+					.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
+				if (role == null)
+					return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
+
+				var rrrs = role.RestrictedRoleReaders.Select(rrr => new RestrictReaderDto
+				{
+					ReaderId = rrr.Reader.ReaderId,
+					RoleId = role.Id
+				});
+
+				return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>(rrrs);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>("Error | Get employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
+			}
+		}
 	}
 }

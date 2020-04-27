@@ -59,6 +59,18 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
+		[HttpGet("restricted-role-readers/{roleId}")]
+		public async Task<IActionResult> GetRestrictedRoleReaders(int roleId)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await rolesService.GetRestrictedRoleReaders(contextUserId, roleId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
 		[HttpPost("add-role")]
 		public async Task<IActionResult> AddEmployeesRole([FromBody]AddEmployeesRoleRequest roleDto)
 		{

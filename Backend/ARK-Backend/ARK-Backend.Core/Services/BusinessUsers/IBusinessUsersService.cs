@@ -16,6 +16,7 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		Task<GenericServiceResponse<BusinessUser>> RegisterBusinessAsync(RegisterBusinessRequest userDto);
 		Task<GenericServiceResponse<BusinessUser>> AuthenticateBusinessAsync(string login, string password);
 		Task<BusinessUser> GetByIdAsync(int id);
+		Task<GenericServiceResponse<IEnumerable<PersonCardDto>>> GetPersonCards(int businessUserId);
 		Task<GenericServiceResponse<BusinessUserAccountData>> UpdateBusinessUser(UpdateBusinessUserRequest editData, int businessUserId);
 		Task<GenericServiceResponse<BusinessUser>> DeleteBusinessUser(int businessUserId);
 		Task<GenericServiceResponse<BusinessUserAccountData>> GetAccountData(int id);

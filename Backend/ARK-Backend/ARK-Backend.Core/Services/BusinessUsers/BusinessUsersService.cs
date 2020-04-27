@@ -383,5 +383,35 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 				return new GenericServiceResponse<PersonCardStatisticDto>("Error | Getting person card statistic: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
+
+		public async Task<GenericServiceResponse<IEnumerable<PersonCardDto>>> GetPersonCards(int businessUserId)
+		{
+			try
+			{
+				var persons = await dbContext.PersonCards
+					.Include(pc => pc.Employees)
+						.ThenInclude(e => e.EmployeesRole)
+						.ThenInclude(er => er.BusinessUser)
+					.Where(pc => pc.Employees.Any(e => e.EmployeesRole.BusinessUser.Id == businessUserId))
+					.Select(pc => new PersonCardDto
+					{
+						Name = pc.Name,
+						Surname = pc.Surname,
+						EmployeesRoleId = pc.Employees.First().EmployeesRole.Id,
+						IsEmployee = pc.IsEmployee,
+						PersonCardId = pc.Id,
+						WorkingDayStartTime = TimeSpanDtoConverter.TimeSpanToString(pc.Employees.First().WorkingDayStartTime),
+						WorkingDayEndTime = TimeSpanDtoConverter.TimeSpanToString(pc.Employees.First().WorkingDayEndTime)
+					})
+					.ToListAsync();
+
+
+				return new GenericServiceResponse<IEnumerable<PersonCardDto>>(persons);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<IEnumerable<PersonCardDto>>("Error | Adding person card to business: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
+			}
+		}
 	}
 }

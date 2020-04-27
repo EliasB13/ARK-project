@@ -43,6 +43,18 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
+		[HttpGet("person-cards")]
+		public async Task<IActionResult> GetPersonCards()
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetPersonCards(contextUserId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
 		[HttpGet("full-statistic")]
 		public async Task<IActionResult> GetFullStatistic(DateTime lowerBound, DateTime upperBound)
 		{
