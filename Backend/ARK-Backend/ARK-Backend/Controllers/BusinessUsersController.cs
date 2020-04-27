@@ -38,9 +38,43 @@ namespace ARK_Backend.Controllers
 
 			var result = await usersService.GetAccountData(contextUserId);
 			if (!result.Success)
-			{
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-			}
+
+			return Ok(result.Item);
+		}
+
+		[HttpGet("full-statistic")]
+		public async Task<IActionResult> GetFullStatistic(DateTime lowerBound, DateTime upperBound)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetFullStatistic(contextUserId, lowerBound, upperBound);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
+		[HttpGet("reader-statistic/{readerId}")]
+		public async Task<IActionResult> GetFullStatistic(int readerId, DateTime lowerBound, DateTime upperBound)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetReaderStatistic(contextUserId, readerId, lowerBound, upperBound);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
+		[HttpGet("person-statistic/{personId}")]
+		public async Task<IActionResult> GetPersonStatistic(int personId, DateTime lowerBound, DateTime upperBound)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await usersService.GetPersonStatistic(contextUserId, personId,	lowerBound, upperBound);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
 			return Ok(result.Item);
 		}

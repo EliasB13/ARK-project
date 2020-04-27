@@ -195,33 +195,98 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 
 		public async Task<GenericServiceResponse<IEnumerable<ReaderStatisticDto>>> GetFullStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
+					return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+
+				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
+				var readersDto = await dbContext.Readers
+					.Include(r => r.Observations)
+						.ThenInclude(o => o.Person)
+					.Where(r => r.BusinessUser.Id == businessUserId)
+					.Select(r =>
+						new ReaderStatisticDto
+						{
+							Id = r.ReaderId,
+							Description = r.Description,
+							IsEntrance = r.IsEntrance,
+							Name = r.Name,
+							Observations = r.Observations.Where(o => o.Time <= upperBound && o.Time >= lowerBound)
+						}).ToListAsync();
+
+				return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>(readersDto);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<IEnumerable<ReaderStatisticDto>>("Error | Getting full statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
 		}
 
 		public async Task<GenericServiceResponse<ReaderStatisticDto>> GetReaderStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
+					return new GenericServiceResponse<ReaderStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+
+				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
+
+				var reader = await dbContext.Readers
+					.Include(r => r.Observations)
+						.ThenInclude(o => o.Person)
+					.SingleOrDefaultAsync(r => r.ReaderId == readerId && r.BusinessUser.Id == businessUserId);
+				if (reader == null)
+					return new GenericServiceResponse<ReaderStatisticDto>($"Rearder with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
+
+				var dto = new ReaderStatisticDto
+				{
+					Id = reader.ReaderId,
+					Name = reader.Name,
+					Description = reader.Description,
+					IsEntrance = reader.IsEntrance,
+					Observations = reader.Observations
+						.Where(o => o.Time <= upperBound && o.Time >= lowerBound)
+						.Select(o =>
+						{
+							o.Reader = null;
+							return o;
+						})
+				};
+
+				return new GenericServiceResponse<ReaderStatisticDto>(dto);
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<ReaderStatisticDto>("Error | Getting reader statistic: " + ex.Message, ErrorCode.ERROR_MOQ);
+			}
 		}
 
 		public async Task<GenericServiceResponse<PersonCardStatisticDto>> GetPersonStatistic(int businessUserId, int personId, DateTime lowerBound, DateTime upperBound)
 		{
 			try
 			{
+				if (lowerBound == DateTime.MinValue || upperBound == DateTime.MinValue)
+					return new GenericServiceResponse<PersonCardStatisticDto>($"You should pass time bounds", ErrorCode.ERROR_MOQ);
+
 				var bUser = await dbContext.BusinessUsers.FindAsync(businessUserId);
 
-				var person = await dbContext.PersonCards.SingleOrDefaultAsync(p => p.Id == personId && p.Employees.Any(e => e.EmployeesRole.BusinessUser.Id == personId));
+				var person = await dbContext.PersonCards.SingleOrDefaultAsync(p => p.Id == personId && p.Employees.Any(e => e.EmployeesRole.BusinessUser.Id == businessUserId));
 				if (person == null)
-					return new GenericServiceResponse<PersonCardStatisticDto>($"Person card with id: { personId } wasn't found in business user id: { businessUserId }", ErrorCode.ERROR_MOQ);
+					return new GenericServiceResponse<PersonCardStatisticDto>($"Person card with id: { personId } wasn't found in business user with id: { businessUserId }", ErrorCode.ERROR_MOQ);
 
-				//var readers = await dbContext.Readers.Where(r => r.Observations.Any(o => o.Person.Id == personId)).ToListAsync();
-				var readers = await dbContext.Observations.GroupBy(o => o.Reader)
-					.Select(g => new ReaderStatisticDto
+				var readers = await dbContext.Readers
+					.Include(r => r.Observations)
+					.Where(r => r.BusinessUser.Id == businessUserId)
+					.Select(r => new ReaderStatisticDto
 					{
-						Id = g.Key.ReaderId,
-						Name = g.Key.Name,
-						Description = g.Key.Description,
-						IsEntrance = g.Key.IsEntrance,
-						Observations = g.Where(o => o.Person.Id == personId && o.Time >= lowerBound && o.Time <= upperBound).Select(o => o)
+						Id = r.ReaderId,
+						Name = r.Name,
+						Description = r.Description,
+						IsEntrance = r.IsEntrance,
+						Observations = r.Observations
+							.Where(o => o.Person.Id == personId && o.Time >= lowerBound && o.Time <= upperBound).Select(o => o)
 					}).ToListAsync();
 
 				var personDto = new PersonCardStatisticDto

@@ -71,30 +71,6 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
-		[HttpDelete("role/{roleId}")]
-		public async Task<IActionResult> DeleteEmployeesRole(int roleId)
-		{
-			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
-
-			var result = await rolesService.DeleteEmployeesRole(contextUserId, roleId);
-			if (!result.Success)
-				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-
-			return Ok(result.Item);
-		}
-
-		[HttpPut("role")]
-		public async Task<IActionResult> UpdateEmployeesRole([FromBody]EmployeesRoleDto updateDto)
-		{
-			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
-
-			var result = await rolesService.UpdateEmployeesRole(contextUserId, updateDto);
-			if (!result.Success)
-				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-
-			return Ok(result.Item);
-		}
-
 		[HttpPost("add-employee-to-role")]
 		public async Task<IActionResult> AddEmployeeToRole([FromBody]AddEmployeeToRoleDto dto)
 		{
@@ -137,6 +113,30 @@ namespace ARK_Backend.Controllers
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
 			var result = await rolesService.UnrestrictReaderInRole(contextUserId, dto.RoleId, dto.ReaderId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
+		[HttpPut("role")]
+		public async Task<IActionResult> UpdateEmployeesRole([FromBody]EmployeesRoleDto updateDto)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await rolesService.UpdateEmployeesRole(contextUserId, updateDto);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
+		[HttpDelete("role/{roleId}")]
+		public async Task<IActionResult> DeleteEmployeesRole(int roleId)
+		{
+			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
+
+			var result = await rolesService.DeleteEmployeesRole(contextUserId, roleId);
 			if (!result.Success)
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 

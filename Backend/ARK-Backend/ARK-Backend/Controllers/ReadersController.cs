@@ -45,6 +45,17 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
+		[AllowAnonymous]
+		[HttpPost("observe")]
+		public async Task<IActionResult> Observe([FromBody]ObservationDto dto)
+		{
+			var result = await readersService.Observe(dto);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok();
+		}
+
 		[HttpDelete("reader/{readerId}")]
 		public async Task<IActionResult> RemoveReader(int readerId)
 		{
@@ -55,17 +66,6 @@ namespace ARK_Backend.Controllers
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
 			return Ok(result.Item);
-		}
-
-		[AllowAnonymous]
-		[HttpPost("observe")]
-		public async Task<IActionResult> Observe([FromBody]ObservationDto dto)
-		{
-			var result = await readersService.Observe(dto);
-			if (!result.Success)
-				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
-
-			return Ok();
 		}
 	}
 }
