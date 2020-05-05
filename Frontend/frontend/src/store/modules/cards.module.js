@@ -56,7 +56,7 @@ const actions = {
         dispatch("alert/success", "Card was successfully removed", {
           root: true
         });
-        dispatch("getCards");
+        //dispatch("getCards");
       },
       error => {
         commit("deleteCardFailure", { id, error: error.toString() });
@@ -114,7 +114,7 @@ const mutations = {
   },
   deleteCardSuccess(state, id) {
     state.status = { ...state.status, cardRemoved: true, cardRemoving: false };
-    state.cards = state.cards.filter(card => card.id !== id);
+    state.cards = state.cards.filter(card => card.personCardId !== id);
   },
   deleteCardFailure(state, { id, error }) {
     state.status = { ...state.status, cardRemoved: false, cardRemoving: false };

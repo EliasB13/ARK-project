@@ -14,6 +14,7 @@ import Login from "@/pages/Authentication/Login.vue";
 import Register from "@/pages/Authentication/Register.vue";
 import AuthLayout from "@/layout/dashboard/AuthLayout.vue";
 import Cards from "@/pages/Cards.vue";
+import Readers from "@/pages/Readers.vue";
 
 const routes = [
   {
@@ -37,9 +38,9 @@ const routes = [
         component: Notifications
       },
       {
-        path: "icons",
+        path: "readers",
         name: "readers",
-        component: Icons
+        component: Readers
       },
       {
         path: "maps",

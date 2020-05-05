@@ -5,7 +5,7 @@
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
         <sidebar-link to="/cards" name="Person cards" icon="ti-user" />
         <sidebar-link to="/notifications" name="Roles" icon="ti-view-list-alt" />
-        <sidebar-link to="/icons" name="Readers" icon="ti-text" />
+        <sidebar-link to="/readers" name="Readers" icon="ti-text" />
       </template>
       <mobile-menu>
         <drop-down class="nav-item" title="Elias corp" title-classes="nav-link" icon="ti-bell">

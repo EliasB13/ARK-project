@@ -36,7 +36,7 @@
           ></paper-table>
         </div>
       </card>
-      <card-adding-modal :showAddingModal="showModal" @close-modal="closeModal"></card-adding-modal>
+      <card-adding-modal :showAddingModal="showModal"></card-adding-modal>
     </div>
 
     <div id="overlay" v-if="showSpinner">
@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-import CardAddingModal from "../components/CardAddingModal.vue";
+import CardAddingModal from "../components/Modals/CardAddingModal.vue";
 import { PaperTable } from "@/components";
 import { mapState, mapActions } from "vuex";
 
@@ -60,7 +60,7 @@ export default {
       tableCols: [
         {
           column: "personCardId",
-          displayName: "Card number"
+          displayName: "Number"
         },
         {
           column: "name",
@@ -126,6 +126,7 @@ export default {
         this.cards.forEach(c => {
           if (c.selected) this.deleteCard(c.personCardId);
         });
+        this.removingMode = false;
       }
     },
     click(item) {
@@ -138,10 +139,6 @@ export default {
         c.selected = false;
         return c;
       });
-    },
-    closeModal(val) {
-      debugger;
-      this.showModal = false;
     }
   },
   mounted() {
