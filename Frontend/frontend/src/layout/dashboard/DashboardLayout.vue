@@ -1,35 +1,19 @@
 <template>
   <div class="wrapper">
-    <side-bar>
+    <side-bar active-color="danger">
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
-        <sidebar-link to="/stats" name="User Profile" icon="ti-user" />
-        <sidebar-link to="/table-list" name="Table List" icon="ti-view-list-alt" />
-        <sidebar-link to="/typography" name="Typography" icon="ti-text" />
-        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
-        <sidebar-link to="/maps" name="Map" icon="ti-map" />
-        <sidebar-link to="/notifications" name="Notifications" icon="ti-bell" />
+        <sidebar-link to="/cards" name="Person cards" icon="ti-user" />
+        <sidebar-link to="/notifications" name="Roles" icon="ti-view-list-alt" />
+        <sidebar-link to="/icons" name="Readers" icon="ti-text" />
       </template>
       <mobile-menu>
-        <li class="nav-item">
-          <a class="nav-link">
-            <i class="ti-panel"></i>
-            <p>Stats</p>
-          </a>
-        </li>
-        <drop-down class="nav-item" title="5 Notifications" title-classes="nav-link" icon="ti-bell">
-          <a class="dropdown-item">Notification 1</a>
-          <a class="dropdown-item">Notification 2</a>
-          <a class="dropdown-item">Notification 3</a>
-          <a class="dropdown-item">Notification 4</a>
-          <a class="dropdown-item">Another notification</a>
+        <drop-down class="nav-item" title="Elias corp" title-classes="nav-link" icon="ti-bell">
+          <a class="dropdown-item">User profile</a>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">Logout</a>
         </drop-down>
-        <li class="nav-item">
-          <a class="nav-link">
-            <i class="ti-settings"></i>
-            <p>Settings</p>
-          </a>
-        </li>
         <li class="divider"></li>
       </mobile-menu>
     </side-bar>

@@ -13,6 +13,7 @@ import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Authentication/Login.vue";
 import Register from "@/pages/Authentication/Register.vue";
 import AuthLayout from "@/layout/dashboard/AuthLayout.vue";
+import Cards from "@/pages/Cards.vue";
 
 const routes = [
   {
@@ -26,18 +27,18 @@ const routes = [
         component: Dashboard
       },
       {
-        path: "stats",
-        name: "stats",
-        component: UserProfile
+        path: "cards",
+        name: "cards",
+        component: Cards
       },
       {
         path: "notifications",
-        name: "notifications",
+        name: "roles",
         component: Notifications
       },
       {
         path: "icons",
-        name: "icons",
+        name: "readers",
         component: Icons
       },
       {

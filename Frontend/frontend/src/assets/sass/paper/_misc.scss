@@ -2,7 +2,7 @@
 body {
   color: $font-color;
   font-size: $font-size-base;
-  font-family: 'Muli', Arial, sans-serif;
+  font-family: "Muli", Arial, sans-serif;
   .wrapper {
     min-height: 100vh;
     position: relative;
@@ -12,13 +12,15 @@ body {
 a {
   color: $info-color;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: $info-states-color;
     text-decoration: none;
   }
 }
 
-a:focus, a:active,
+a:focus,
+a:active,
 button::-moz-focus-inner,
 input::-moz-focus-inner,
 select::-moz-focus-inner,
@@ -101,7 +103,7 @@ hr {
 
 .icon-container {
   width: 240px;
-  padding: .7em 0;
+  padding: 0.7em 0;
   float: left;
   position: relative;
   text-align: left;
@@ -112,7 +114,7 @@ hr {
   color: #000;
   position: absolute;
   margin-top: 3px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .icon-container:hover [class^="ti-"],
@@ -128,8 +130,8 @@ hr {
 .icon-name {
   color: #aaa;
   margin-left: 35px;
-  font-size: .8em;
-  transition: .3s;
+  font-size: 0.8em;
+  transition: 0.3s;
 }
 
 .icon-container:hover .icon-name {
@@ -137,7 +139,7 @@ hr {
 }
 
 .places-buttons .btn {
-  margin-bottom: 30px
+  margin-bottom: 30px;
 }
 
 .sidebar .nav > li.active-pro {
@@ -149,11 +151,10 @@ hr {
 .sidebar .nav > li.active-pro a {
   background: rgba(255, 255, 255, 0.14);
   opacity: 1;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .table-upgrade td:nth-child(2),
 .table-upgrade td:nth-child(3) {
   text-align: center;
 }
-

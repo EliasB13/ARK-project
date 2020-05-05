@@ -1,26 +1,27 @@
 <template>
   <table class="table" :class="tableClass">
     <thead>
-    <slot name="columns">
-      <th v-for="column in columns" :key="column">{{column}}</th>
-    </slot>
+      <slot name="columns">
+        <th v-for="column in columns" :key="column.column">{{ column.displayName }}</th>
+      </slot>
     </thead>
     <tbody>
-    <tr v-for="(item, index) in data" :key="index">
-      <slot :row="item">
-        <td v-for="(column, index) in columns"
-            :key="index"
-            v-if="hasValue(item, column)">
-          {{itemValue(item, column)}}
-        </td>
-      </slot>
-    </tr>
+      <tr
+        v-for="(item, index) in data"
+        :key="index"
+        @click="rowClick(item, index)"
+        :class="isSelected(index) ? 'item-selected' : 'item-deselected'"
+      >
+        <slot :row="item">
+          <td v-for="(column, index) in columns" :key="index">{{ itemValue(item, column) }}</td>
+        </slot>
+      </tr>
     </tbody>
   </table>
 </template>
 <script>
 export default {
-  name: 'paper-table',
+  name: "paper-table",
   props: {
     columns: Array,
     data: Array,
@@ -35,7 +36,13 @@ export default {
     subTitle: {
       type: String,
       default: ""
-    }
+    },
+    removingMode: Boolean
+  },
+  data() {
+    return {
+      selected: []
+    };
   },
   computed: {
     tableClass() {
@@ -47,10 +54,29 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
-      return item[column.toLowerCase()];
+      return item[column.column];
+    },
+    rowClick(item, index) {
+      if (this.removingMode)
+        this.$set(this.selected, index, !this.selected[index]);
+      this.$emit("click", item);
+    },
+    isSelected(index) {
+      return this.selected[index];
+    }
+  },
+  watch: {
+    removingMode: {
+      handler: function(newValue, oldValue) {
+        if (!newValue) this.selected = [];
+      },
+      deep: true
     }
   }
 };
 </script>
 <style>
+.selected-row {
+  background-color: gray !important;
+}
 </style>
