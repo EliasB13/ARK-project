@@ -2,10 +2,11 @@
   <div class="wrapper">
     <side-bar active-color="danger">
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
-        <sidebar-link to="/cards" name="Person cards" icon="ti-user" />
-        <sidebar-link to="/notifications" name="Roles" icon="ti-view-list-alt" />
-        <sidebar-link to="/readers" name="Readers" icon="ti-text" />
+        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-stats-up" />
+        <sidebar-link to="/cards" name="Person cards" icon="ti-credit-card" />
+        <sidebar-link to="/notifications" name="Roles" icon="ti-id-badge" />
+        <sidebar-link to="/readers" name="Readers" icon="ti-rss-alt" />
+        <sidebar-link to="/profile" name="Profile" icon="ti-user" />
       </template>
       <mobile-menu>
         <drop-down class="nav-item" title="Elias corp" title-classes="nav-link" icon="ti-bell">

@@ -3,117 +3,53 @@
     <div>
       <form @submit.prevent>
         <div class="row">
-          <div class="col-md-5">
-            <fg-input
-              type="text"
-              label="Company"
-              :disabled="true"
-              placeholder="Paper dashboard"
-              v-model="user.company"
-            >
-            </fg-input>
+          <div class="col-md-6">
+            <fg-input type="text" label="Username" placeholder="Username" v-model="localUser.login"></fg-input>
           </div>
-          <div class="col-md-3">
-            <fg-input
-              type="text"
-              label="Username"
-              placeholder="Username"
-              v-model="user.username"
-            >
-            </fg-input>
-          </div>
-          <div class="col-md-4">
-            <fg-input
-              type="email"
-              label="Username"
-              placeholder="Email"
-              v-model="user.email"
-            >
-            </fg-input>
+          <div class="col-md-6">
+            <fg-input type="text" label="Email" placeholder="Email" v-model="localUser.email"></fg-input>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6">
-            <fg-input
-              type="text"
-              label="First Name"
-              placeholder="First Name"
-              v-model="user.firstName"
-            >
-            </fg-input>
-          </div>
-          <div class="col-md-6">
-            <fg-input
-              type="text"
-              label="Last Name"
-              placeholder="Last Name"
-              v-model="user.lastName"
-            >
-            </fg-input>
-          </div>
-        </div>
+        <hr class="my-2" />
 
         <div class="row">
           <div class="col-md-12">
             <fg-input
               type="text"
-              label="Address"
-              placeholder="Home Address"
-              v-model="user.address"
-            >
-            </fg-input>
+              label="Company"
+              placeholder="Company"
+              v-model="localUser.companyName"
+            ></fg-input>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-4">
-            <fg-input
-              type="text"
-              label="City"
-              placeholder="City"
-              v-model="user.city"
-            >
-            </fg-input>
+          <div class="col-md-6">
+            <fg-input type="text" label="Address" placeholder="Address" v-model="localUser.address"></fg-input>
           </div>
-          <div class="col-md-4">
-            <fg-input
-              type="text"
-              label="Country"
-              placeholder="Country"
-              v-model="user.country"
-            >
-            </fg-input>
-          </div>
-          <div class="col-md-4">
-            <fg-input
-              type="number"
-              label="Postal Code"
-              placeholder="ZIP Code"
-              v-model="user.postalCode"
-            >
-            </fg-input>
+          <div class="col-md-6">
+            <fg-input type="text" label="Phone" placeholder="Phone" v-model="localUser.phone"></fg-input>
           </div>
         </div>
+
+        <hr class="my-2" />
 
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>About Me</label>
+              <label>Description</label>
               <textarea
                 rows="5"
                 class="form-control border-input"
                 placeholder="Here can be your description"
-                v-model="user.aboutMe"
-              >
-              </textarea>
+                v-model="localUser.description"
+              ></textarea>
             </div>
           </div>
         </div>
         <div class="text-center">
-          <p-button type="info" round @click.native.prevent="updateProfile">
-            Update Profile
-          </p-button>
+          <p-button type="info" round @click="updateProfile">Update Profile</p-button>
         </div>
         <div class="clearfix"></div>
       </form>
@@ -121,25 +57,33 @@
   </card>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
+  props: {
+    user: Object
+  },
   data() {
     return {
-      user: {
-        company: "Paper Dashboard",
-        username: "michael23",
-        email: "",
-        firstName: "Chet",
-        lastName: "Faker",
-        address: "Melbourne, Australia",
-        city: "Melbourne",
-        postalCode: "",
-        aboutMe: `We must accept finite disappointment, but hold on to infinite hope.`
-      }
+      localUser: {}
     };
   },
+  computed: {
+    ...mapState({
+      status: state => state.account.status
+    })
+  },
   methods: {
+    ...mapActions("account", ["getAccountData", "updateUser"]),
     updateProfile() {
-      alert("Your data: " + JSON.stringify(this.user));
+      this.updateUser(this.localUser);
+    }
+  },
+  watch: {
+    user: function(newV, oldV) {
+      if (newV) {
+        this.localUser = this.user;
+      }
     }
   }
 };

@@ -1,69 +1,36 @@
 <template>
   <card class="card-user">
     <div slot="image">
-      <img src="@/assets/img/background.jpg" alt="...">
+      <img src="@/assets/img/user.png" class="card-img-top" alt="..." />
     </div>
     <div>
       <div class="author">
-        <img class="avatar border-white" src="@/assets/img/faces/face-2.jpg" alt="...">
-        <h4 class="title">Chet Faker
-          <br>
+        <h4 class="title">
+          {{ companyName }}
+          <br />
           <a href="#">
-            <small>@chetfaker</small>
+            <small>@{{ login }}</small>
           </a>
         </h4>
       </div>
-      <p class="description text-center">
-        "I like the way you work it
-        <br> No diggity
-        <br> I wanna bag it up"
-      </p>
+      <p class="description text-center">{{ address }}</p>
     </div>
-    <hr>
-    <div class="text-center">
-      <div class="row">
-        <div v-for="(info, index) in details" :key="index" :class="getClasses(index)">
-          <h5>{{info.title}}
-            <br>
-            <small>{{info.subTitle}}</small>
-          </h5>
-        </div>
-      </div>
-    </div>
+    <hr />
+    <div class="description text-center">{{ description }}</div>
   </card>
 </template>
 <script>
 export default {
-  data() {
-    return {
-      details: [
-        {
-          title: "12",
-          subTitle: "Files"
-        },
-        {
-          title: "2GB",
-          subTitle: "Used"
-        },
-        {
-          title: "24,6$",
-          subTitle: "Spent"
-        }
-      ]
-    };
+  props: {
+    companyName: String,
+    address: String,
+    description: String,
+    login: String
   },
-  methods: {
-    getClasses(index) {
-      var remainder = index % 3;
-      if (remainder === 0) {
-        return "col-lg-3 offset-lg-1";
-      } else if (remainder === 2) {
-        return "col-lg-4";
-      } else {
-        return "col-lg-3";
-      }
-    }
-  }
+  data() {
+    return {};
+  },
+  methods: {}
 };
 </script>
 <style>

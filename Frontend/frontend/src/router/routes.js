@@ -48,9 +48,9 @@ const routes = [
         component: Maps
       },
       {
-        path: "typography",
-        name: "typography",
-        component: Typography
+        path: "profile",
+        name: "profile",
+        component: UserProfile
       },
       {
         path: "table-list",

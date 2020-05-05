@@ -16,9 +16,9 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
           <drop-down class="nav-item" title="Elias corp" title-classes="nav-link" icon="ti-bell">
-            <a class="dropdown-item" href="#">User profile</a>
+            <router-link class="dropdown-item" to="/profile">User profile</router-link>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Logout</a>
+            <router-link class="dropdown-item" to="/login">Logout</router-link>
           </drop-down>
         </ul>
       </div>

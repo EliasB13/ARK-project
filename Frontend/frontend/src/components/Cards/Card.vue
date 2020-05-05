@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-image" v-if="$slots.image">
+    <div v-if="$slots.image">
       <slot name="image"></slot>
     </div>
     <div class="card-header" v-if="$slots.header || title">

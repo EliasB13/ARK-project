@@ -154,6 +154,7 @@
 
 .main-panel {
   background-color: $bg-nude;
+  overflow-x: hidden !important;
   position: relative;
   z-index: 2;
   float: right;
@@ -177,6 +178,7 @@
 
 .main-panel-auth {
   background-color: $bg-nude;
+  overflow-x: hidden !important;
   position: relative;
   z-index: 2;
   float: right;
