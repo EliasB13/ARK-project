@@ -235,7 +235,10 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				if (reader == null)
 					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
-				var role = await dbContext.EmployeesRoles.Include(er => er.RestrictedRoleReaders).SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
+				var role = await dbContext.EmployeesRoles
+					.Include(er => er.RestrictedRoleReaders)
+						.ThenInclude(rrr => rrr.Reader)
+					.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
 				if (role == null)
 					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
 
@@ -267,7 +270,10 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 				if (reader == null)
 					return new GenericServiceResponse<ReaderDto>($"Reader with id: { readerId } wasn't found in business user with id: { businessUserId }", ErrorCode.READER_NOT_FOUND);
 
-				var role = await dbContext.EmployeesRoles.Include(er => er.RestrictedRoleReaders).SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
+				var role = await dbContext.EmployeesRoles
+					.Include(er => er.RestrictedRoleReaders)
+						.ThenInclude(rrr => rrr.Reader)
+					.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
 				if (role == null)
 					return new GenericServiceResponse<ReaderDto>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
 
@@ -286,7 +292,7 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 			}
 		}
 
-		public async Task<GenericServiceResponse<IEnumerable<RestrictReaderDto>>> GetRestrictedRoleReaders(int businessUserId, int roleId)
+		public async Task<GenericServiceResponse<IEnumerable<ReaderDto>>> GetRestrictedRoleReaders(int businessUserId, int roleId)
 		{
 			try
 			{
@@ -295,19 +301,21 @@ namespace ARK_Backend.Core.Services.EmployeesRoles
 						.ThenInclude(er => er.Reader)
 					.SingleOrDefaultAsync(er => er.BusinessUser.Id == businessUserId && er.Id == roleId);
 				if (role == null)
-					return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
+					return new GenericServiceResponse<IEnumerable<ReaderDto>>($"Role with id: { roleId } wasn't found in business user with id: { businessUserId }", ErrorCode.ROLE_NOT_FOUND);
 
-				var rrrs = role.RestrictedRoleReaders.Select(rrr => new RestrictReaderDto
+				var readers = role.RestrictedRoleReaders.Select(rrr => new ReaderDto
 				{
-					ReaderId = rrr.Reader.ReaderId,
-					RoleId = role.Id
+					Id = rrr.Reader.ReaderId,
+					Description = rrr.Reader.Description,
+					IsEntrance = rrr.Reader.IsEntrance,
+					Name = rrr.Reader.Name
 				});
 
-				return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>(rrrs);
+				return new GenericServiceResponse<IEnumerable<ReaderDto>>(readers);
 			}
 			catch (Exception ex)
 			{
-				return new GenericServiceResponse<IEnumerable<RestrictReaderDto>>("Error | Get employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
+				return new GenericServiceResponse<IEnumerable<ReaderDto>>("Error | Get employees role: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
 	}
