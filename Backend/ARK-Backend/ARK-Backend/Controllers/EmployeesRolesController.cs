@@ -100,7 +100,7 @@ namespace ARK_Backend.Controllers
 		{
 			int contextUserId = int.Parse(HttpContext.User.Identity.Name);
 
-			var result = await rolesService.AddEmployeeToRole(contextUserId, dto.RoleId, dto.PersonCardId);
+			var result = await rolesService.RemoveEmployeeFromRole(contextUserId, dto.RoleId, dto.PersonCardId);
 			if (!result.Success)
 				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
 
