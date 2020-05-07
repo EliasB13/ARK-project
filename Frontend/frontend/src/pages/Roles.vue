@@ -110,7 +110,12 @@ export default {
     },
     click(item) {
       let role = this.roles.find(r => r.id === item.id);
-      role.selected = !role.selected;
+
+      if (!this.removingMode)
+        this.$router.push({ name: "role", params: { roleId: role.id } });
+      else {
+        role.selected = !role.selected;
+      }
     },
     resetClick() {
       this.removingMode = false;
@@ -125,7 +130,6 @@ export default {
   },
   watch: {
     roles: function(oldValue, newValue) {
-      debugger;
       this.roles.map(r => {
         if (r.isAnonymous) {
           r.name = "-";

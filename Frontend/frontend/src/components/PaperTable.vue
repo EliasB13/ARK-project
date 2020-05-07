@@ -70,6 +70,9 @@ export default {
     },
     isSelected(index) {
       return this.selected[index];
+    },
+    resetSelection() {
+      this.selected = [];
     }
   },
   watch: {

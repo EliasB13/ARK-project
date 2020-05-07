@@ -16,6 +16,7 @@ import AuthLayout from "@/layout/dashboard/AuthLayout.vue";
 import Cards from "@/pages/Cards.vue";
 import Readers from "@/pages/Readers.vue";
 import Roles from "@/pages/Roles.vue";
+import Role from "@/pages/Role.vue";
 
 const routes = [
   {
@@ -57,6 +58,12 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList
+      },
+      {
+        path: "/role/:roleId",
+        name: "role",
+        component: Role,
+        props: true
       }
     ]
   },

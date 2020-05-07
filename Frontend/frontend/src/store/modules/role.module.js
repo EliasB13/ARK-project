@@ -1,18 +1,99 @@
 import { rolesService } from "../../services";
 
 const state = {
-  role: [],
+  role: {},
   status: {},
   error: null,
-  cardToAdd: null
+  cardToAdd: null,
+  readerToRestrict: null,
+  employees: [],
+  readerToUnrestrict: null,
+  restrictedReaders: []
 };
 
 const actions = {
-  getRoleById({ commit, dispatch }, id) {},
-  getRoleEmployees({ commit, dispatch }, id) {},
-  addCardToRole({ commit, dispatch }, dto) {},
-  restrictReader({ commit, dispatch }, dto) {},
-  unrestrictReader({ commit, dispatch }, dto) {}
+  getRoleById({ commit, dispatch }, id) {
+    commit("getRoleByIdRequest");
+
+    rolesService.getRoleById(id).then(
+      role => commit("getRoleByIdSuccess", role),
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("getRoleByIdFailure", error);
+      }
+    );
+  },
+  getRoleEmployees({ commit, dispatch }, id) {
+    commit("getRoleEmployeesRequest");
+
+    rolesService.getRoleEmployees(id).then(
+      employees => commit("getRoleEmployeesSuccess", employees),
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("getRoleEmployeesFailure", error);
+      }
+    );
+  },
+  getRoleRestrictedReaders({ commit, dispatch }, id) {
+    commit("getRoleRestrictedReadersRequest");
+
+    rolesService.getRoleRestrictedReaders(id).then(
+      readers => commit("getRoleRestrictedReadersSuccess", readers),
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("getRoleRestrictedReadersFailure", error);
+      }
+    );
+  },
+  addCardToRole({ commit, dispatch }, dto) {
+    commit("addCardToRoleRequest", dto);
+
+    rolesService.addCardToRole(dto.roleId, dto.cardId).then(
+      () => {
+        commit("addCardToRoleSuccess");
+        dispatch("alert/success", "Card was successfully added to role", {
+          root: true
+        });
+      },
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("addCardToRoleFailure", error);
+      }
+    );
+  },
+  restrictReader({ commit, dispatch }, dto) {
+    commit("restrictRequest", dto);
+
+    rolesService.restrictReader(dto.readerId, dto.roleId).then(
+      () => {
+        commit("restrictSuccess");
+        dispatch("getRoleRestrictedReaders", dto.roleId);
+        dispatch("alert/success", "Readers was sucessfully restricted", {
+          root: true
+        });
+      },
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("restrictFailure", error);
+      }
+    );
+  },
+  unrestrictReader({ commit, dispatch }, dto) {
+    commit("unrestrictRequest", dto);
+
+    rolesService.unrestrictReader(dto.readerId, dto.roleId).then(
+      () => {
+        commit("unrestrictSuccess", dto.readerId);
+        dispatch("alert/success", "Readers was sucessfully restricted", {
+          root: true
+        });
+      },
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("unrestrictFailure", error);
+      }
+    );
+  }
 };
 
 const mutations = {
@@ -21,18 +102,85 @@ const mutations = {
     state.status = { roleLoading: true };
   },
   getRoleByIdSuccess(state, role) {
-    state.state = { roleLoading: true };
+    state.status = { roleLoaded: true };
     state.role = role;
   },
   getRoleByIdFailure(state, error) {
     state.status = {};
-    state.role = [];
+    state.role = {};
+    state.error = error;
+  },
+
+  // getRoleEmployees
+  getRoleEmployeesRequest(state) {
+    state.status = { employeesLoading: true };
+  },
+  getRoleEmployeesSuccess(state, employees) {
+    state.status = { employeesLoaded: true };
+    state.employees = employees;
+  },
+  getRoleEmployeesFailure(state, error) {
+    state.status = {};
+    state.employees = [];
+    state.error = error;
+  },
+
+  // getRoleRestrictedReadersRequest
+  getRoleRestrictedReadersRequest(state) {
+    state.status = { restrictedReadersLoading: true };
+  },
+  getRoleRestrictedReadersSuccess(state, readers) {
+    state.status = { restrictedReadersLoaded: true };
+    state.restrictedReaders = readers;
+  },
+  getRoleRestrictedReadersFailure(state, error) {
+    state.status = {};
+    state.restrictedReaders = [];
+    state.error = error;
+  },
+
+  // addCardToRole
+  addCardToRoleRequest(state, cardToAdd) {
+    state.status = { cardAdding: true };
+    state.cardToAdd = cardToAdd;
+  },
+  addCardToRoleSuccess(state) {
+    state.status = { cardAded: true };
+  },
+  addCardToRoleFailure(state, error) {
+    state.status = {};
+    state.cardToAdd = {};
+    state.error = error;
+  },
+
+  // restrictReader
+  restrictRequest(state, readerToRestrict) {
+    state.status = { readerRestricting: true };
+    state.readerToRestrict = readerToRestrict;
+  },
+  restrictSuccess(state) {
+    state.status = { readerRestricted: true };
+  },
+  restrictFailure(state, error) {
+    state.status = {};
+    state.readerToRestrict = {};
+    state.error = error;
+  },
+
+  // unrestrictReader
+  unrestrictRequest(state, readerToUnrestrict) {
+    state.status = { readerUnrestricting: true };
+    state.readerToUnrestrict = readerToUnrestrict;
+  },
+  unrestrictSuccess(state, id) {
+    state.status = { readerUnrestricted: true };
+    state.restrictedReaders = state.restrictedReaders.filter(r => r.id !== id);
+  },
+  unrestrictFailure(state, error) {
+    state.status = {};
+    state.readerToUnrestrict = {};
     state.error = error;
   }
-  // getRoleEmployees
-  // addCardToRole
-  // restrictReader
-  // unrestrictReader
 };
 
 export const role = {

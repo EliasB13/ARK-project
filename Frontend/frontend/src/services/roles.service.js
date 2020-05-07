@@ -5,6 +5,7 @@ export const rolesService = {
   getRoles,
   getRoleById,
   getRoleEmployees,
+  getRoleRestrictedReaders,
   addRole,
   addCardToRole,
   deleteRole,
@@ -45,6 +46,19 @@ function getRoleEmployees(id) {
   };
 
   const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/employees-in-roles/${id}`;
+
+  return fetch(requestString, requestOptions).then(
+    responseHandler.handleResponse
+  );
+}
+
+function getRoleRestrictedReaders(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader()
+  };
+
+  const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/restricted-role-readers/${id}`;
 
   return fetch(requestString, requestOptions).then(
     responseHandler.handleResponse
