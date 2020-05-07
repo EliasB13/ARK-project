@@ -10,7 +10,10 @@
         v-for="(item, index) in data"
         :key="index"
         @click="rowClick(item, index)"
-        :class="isSelected(index) ? 'item-selected' : 'item-deselected'"
+        :class="[
+          isSelected(index) ? 'item-selected' : 'item-deselected',
+          hoverable ? 'table-row-hover' : '',
+          hoverable && !removingMode ? 'table-row-hover-bg-color' : '']"
       >
         <slot :row="item">
           <td v-for="(column, index) in columns" :key="index">{{ itemValue(item, column) }}</td>
@@ -37,7 +40,8 @@ export default {
       type: String,
       default: ""
     },
-    removingMode: Boolean
+    removingMode: Boolean,
+    hoverable: Boolean
   },
   data() {
     return {
@@ -54,6 +58,9 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      if (typeof item[column.column] === "boolean") {
+        return item[column.column] ? "+" : "-";
+      }
       return item[column.column];
     },
     rowClick(item, index) {

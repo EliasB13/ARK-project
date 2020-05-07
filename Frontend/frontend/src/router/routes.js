@@ -15,6 +15,7 @@ import Register from "@/pages/Authentication/Register.vue";
 import AuthLayout from "@/layout/dashboard/AuthLayout.vue";
 import Cards from "@/pages/Cards.vue";
 import Readers from "@/pages/Readers.vue";
+import Roles from "@/pages/Roles.vue";
 
 const routes = [
   {
@@ -33,9 +34,9 @@ const routes = [
         component: Cards
       },
       {
-        path: "notifications",
+        path: "roles",
         name: "roles",
-        component: Notifications
+        component: Roles
       },
       {
         path: "readers",

@@ -79,3 +79,17 @@
     padding: 15px 8px;
   }
 }
+
+.table-row-hover {
+  &:hover {
+    @include transition(color 0.3s ease);
+    color: #ff0000;
+  }
+}
+
+.table-row-hover-bg-color {
+  &:hover {
+    @include transition(background-color 0.3s ease);
+    background-color: #e8e8e8 !important;
+  }
+}

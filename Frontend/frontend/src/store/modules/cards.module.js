@@ -4,7 +4,8 @@ const state = {
   cards: [],
   status: {},
   error: null,
-  cardToAdd: null
+  cardToAdd: null,
+  statistic: {}
 };
 
 const actions = {
@@ -81,15 +82,15 @@ const mutations = {
   },
 
   getCardStatisticRequest(state) {
-    state.status = { cardsLoading: true };
+    state.status = { cardStatisticLoading: true };
   },
-  getCardStatisticSuccess(state, cards) {
-    state.status = { cardsLoaded: true };
-    state.cards = cards;
+  getCardStatisticSuccess(state, statistic) {
+    state.status = { cardStatisticLoaded: true };
+    state.statistic = statistic;
   },
   getCardStatisticFailure(state, error) {
     state.status = {};
-    state.cards = [];
+    state.statistic = [];
     state.error = error;
   },
 
@@ -119,7 +120,7 @@ const mutations = {
   deleteCardFailure(state, { id, error }) {
     state.status = { ...state.status, cardRemoved: false, cardRemoving: false };
     state.cards = state.cards.map(card => {
-      if (card.id === id) {
+      if (card.personCardId === id) {
         const { cardRemoving, ...cardCopy } = card;
         return { ...cardCopy, deleteError: error };
       }

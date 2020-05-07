@@ -4,7 +4,7 @@
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-stats-up" />
         <sidebar-link to="/cards" name="Person cards" icon="ti-credit-card" />
-        <sidebar-link to="/notifications" name="Roles" icon="ti-id-badge" />
+        <sidebar-link to="/roles" name="Roles" icon="ti-id-badge" />
         <sidebar-link to="/readers" name="Readers" icon="ti-rss-alt" />
         <sidebar-link to="/profile" name="Profile" icon="ti-user" />
       </template>

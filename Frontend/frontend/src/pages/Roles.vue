@@ -5,11 +5,11 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Readers</h4>
-              <p class="card-category my-2">Here you can explore and manage your readers</p>
+              <h4 class="card-title">Employees roles</h4>
+              <p class="card-category my-2">Here you can explore and manage your employees roles</p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete reader</h4>
+              <h4 class="card-title">Delete role</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
               <p-button v-if="!removingMode" type="success" @click="addClick">
@@ -29,31 +29,33 @@
         <div slot="raw-content" class="table-responsive">
           <hr />
           <paper-table
+            :hoverable="true"
             :removingMode="removingMode"
-            :data="readers"
+            :data="roles"
             :columns="tableCols"
             @click="click"
           ></paper-table>
         </div>
       </card>
-      <reader-adding-modal :showAddingModal="showModal"></reader-adding-modal>
+      <role-adding-modal :showAddingModal="showModal"></role-adding-modal>
     </div>
 
     <div id="overlay" v-if="showSpinner">
-      <b-spinner class="spinner-scaled" label="loading"></b-spinner>
+      <b-spinner class="spinner-scaled mb-2" label="loading"></b-spinner>
       <br />Loading
     </div>
   </div>
 </template>
+</template>
 <script>
-import ReaderAddingModal from "../components/Modals/ReaderAddingModal.vue";
+import RoleAddingModal from "../components/Modals/RoleAddingModal.vue";
 import { PaperTable } from "@/components";
 import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
     PaperTable,
-    ReaderAddingModal
+    RoleAddingModal
   },
   data() {
     return {
@@ -71,59 +73,69 @@ export default {
           displayName: "Description"
         },
         {
-          column: "isEntrance",
-          displayName: "Is entrance"
+          column: "isAnonymous",
+          displayName: "Is anonymous"
         }
       ],
       removingMode: false,
-      selectedCards: [],
       showModal: false
     };
   },
   computed: {
     ...mapState({
-      readers: state => state.readers.readers,
-      status: state => state.readers.status
+      roles: state => state.roles.roles,
+      status: state => state.roles.status
     }),
     showSpinner() {
       return (
-        this.status.readersLoading ||
-        this.status.readerAdding ||
-        this.status.readerRemoving
+        this.status.rolesLoading ||
+        this.status.roleAdding ||
+        this.status.roleRemoving
       );
     }
   },
   methods: {
-    ...mapActions("readers", ["getReaders", "addReader", "deleteReader"]),
+    ...mapActions("roles", ["getRoles", "addRole", "deleteRole"]),
     addClick() {
       this.showModal = true;
     },
     deleteClick() {
       if (!this.removingMode) this.removingMode = true;
       else {
-        this.readers.forEach(r => {
-          if (r.selected) this.deleteReader(r.id);
+        this.roles.forEach(r => {
+          if (r.selected) this.deleteRole(r.id);
         });
         this.removingMode = false;
       }
     },
     click(item) {
-      let reader = this.readers.find(c => c.id === item.id);
-      reader.selected = !reader.selected;
+      let role = this.roles.find(r => r.id === item.id);
+      role.selected = !role.selected;
     },
     resetClick() {
       this.removingMode = false;
-      this.readers.map(r => {
+      this.roles.map(r => {
         r.selected = false;
         return r;
       });
     }
   },
   mounted() {
-    this.getReaders();
+    this.getRoles();
   },
-  watch: {}
+  watch: {
+    roles: function(oldValue, newValue) {
+      debugger;
+      this.roles.map(r => {
+        if (r.isAnonymous) {
+          r.name = "-";
+          r.description = "-";
+          //r.isAnonymous = "+";
+        }
+        //else r.isAnonymous = "-";
+        return r;
+      });
+    }
+  }
 };
 </script>
-<style>
-</style>

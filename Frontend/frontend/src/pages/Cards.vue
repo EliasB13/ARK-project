@@ -149,11 +149,11 @@ export default {
       this.getRoles();
       this.cards.map(e => {
         if (!e.isEmployee) {
-          e.isEmployee = "-";
+          //e.isEmployee = "-";
           e.workingDayStartTime = "-";
           e.workingDayEndTime = "-";
         } else {
-          e.isEmployee = "+";
+          //e.isEmployee = "+";
         }
         return e;
       });

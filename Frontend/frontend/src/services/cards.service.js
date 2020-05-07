@@ -28,7 +28,7 @@ function getCardStatistic(id) {
   };
 
   return fetch(
-    `${process.env.VUE_APP_DEV_BACKEND_URL}/api/BusinessUsers/person-statistic/${roleId}`,
+    `${process.env.VUE_APP_DEV_BACKEND_URL}/api/BusinessUsers/person-statistic/${id}`,
     requestOptions
   ).then(responseHandler.handleResponse);
 }

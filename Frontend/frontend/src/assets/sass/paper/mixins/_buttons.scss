@@ -92,3 +92,7 @@
     padding: $padding-vertical + 2 $padding-horizontal;
   }
 }
+
+@mixin transition($args...) {
+  transition: $args;
+}
