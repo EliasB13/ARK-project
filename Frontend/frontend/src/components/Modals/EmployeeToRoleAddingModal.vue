@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-modal v-model="showAddingModal" centered :showClose="false">
-      <div slot="modal-header">Select readers to restrict</div>
+    <b-modal v-model="showAddingModal" centered :showClose="false" size="lg" no-close-on-backdrop>
+      <div slot="modal-header">Select employees to add</div>
       <template>
         <div class="scrollable-list">
           <paper-table
             :removingMode="true"
-            :data="readers"
+            :data="cards"
             :columns="tableCols"
             @click="click"
             ref="table"
@@ -15,7 +15,7 @@
       </template>
       <template slot="modal-footer">
         <p-button simple @click="closeModal">Close</p-button>
-        <p-button type="success" class="ml-auto" @click="addReaderClick">Restrict</p-button>
+        <p-button type="success" class="ml-auto" @click="addReaderClick">Add employees</p-button>
       </template>
     </b-modal>
   </div>
@@ -26,7 +26,7 @@ import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 import { PaperTable } from "@/components";
 
 export default {
-  name: "reader-adding-modal",
+  name: "employee-adding-modal",
   components: {
     VueTimepicker,
     PaperTable
@@ -35,7 +35,7 @@ export default {
     return {
       tableCols: [
         {
-          column: "id",
+          column: "personCardId",
           displayName: "Number"
         },
         {
@@ -43,12 +43,24 @@ export default {
           displayName: "Name"
         },
         {
-          column: "description",
-          displayName: "Description"
+          column: "surname",
+          displayName: "Surname"
         },
         {
-          column: "isEntrance",
-          displayName: "Is entrance"
+          column: "isEmployee",
+          displayName: "Is employee"
+        },
+        {
+          column: "employeesRoleId",
+          displayName: "Role"
+        },
+        {
+          column: "workingDayStartTime",
+          displayName: "Working day starts at"
+        },
+        {
+          column: "workingDayEndTime",
+          displayName: "Working day ends at"
         }
       ]
     };
@@ -60,37 +72,33 @@ export default {
   computed: {
     ...mapState({
       status: state => state.role.status,
-      readers: state => state.readers.readers,
-      readersStatus: state => state.readers.status
+      cards: state => state.cards.cards,
+      cardsStatus: state => state.cards.status
     }),
     showSpinner() {
-      return (
-        this.readersStatus.readersLoading ||
-        this.status.readerRestricting ||
-        this.status.readerUnrestricting
-      );
+      return this.cardsStatus.cardsLoading || this.status.cardAdding;
     }
   },
   methods: {
-    ...mapActions("role", ["restrictReader"]),
-    ...mapActions("readers", ["getReaders"]),
+    ...mapActions("role", ["addCardToRole"]),
+    ...mapActions("cards", ["getCards"]),
     addReaderClick() {
-      this.readers.forEach(r => {
+      this.cards.forEach(r => {
         if (r.selected)
-          this.restrictReader({ readerId: r.id, roleId: this.roleId });
+          this.addCardToRole({ cardId: r.personCardId, roleId: this.roleId });
       });
       this.closeModal();
     },
     closeModal() {
       this.$parent.showModal = false;
       this.$refs.table.resetSelection();
-      this.readers.map(r => {
+      this.cards.map(r => {
         r.selected = false;
         return r;
       });
     },
     click(item) {
-      let reader = this.readers.find(c => c.id === item.id);
+      let reader = this.cards.find(c => c.personCardId === item.personCardId);
       reader.selected = !reader.selected;
     }
   },
@@ -102,7 +110,7 @@ export default {
     }
   },
   mounted() {
-    this.getReaders();
+    this.getCards();
   }
 };
 </script>

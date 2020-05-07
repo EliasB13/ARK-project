@@ -47,17 +47,34 @@ const actions = {
   },
   addCardToRole({ commit, dispatch }, dto) {
     commit("addCardToRoleRequest", dto);
-
+    debugger;
     rolesService.addCardToRole(dto.roleId, dto.cardId).then(
       () => {
         commit("addCardToRoleSuccess");
         dispatch("alert/success", "Card was successfully added to role", {
           root: true
         });
+        dispatch("getRoleEmployees", dto.roleId);
       },
       error => {
         dispatch("alert/error", error.toString(), { root: true });
         commit("addCardToRoleFailure", error);
+      }
+    );
+  },
+  removeCardFromRole({ commit, dispatch }, dto) {
+    commit("removeCardFromRoleRequest", dto);
+
+    rolesService.removeCardFromRole(dto.roleId, dto.cardId).then(
+      () => {
+        commit("removeCardFromRoleSuccess", dto.cardId);
+        dispatch("alert/success", "Card was successfully removed from role", {
+          root: true
+        });
+      },
+      error => {
+        dispatch("alert/error", error.toString(), { root: true });
+        commit("removeCardFromRoleFailure", error);
       }
     );
   },
@@ -145,7 +162,7 @@ const mutations = {
     state.cardToAdd = cardToAdd;
   },
   addCardToRoleSuccess(state) {
-    state.status = { cardAded: true };
+    state.status = { cardAdded: true };
   },
   addCardToRoleFailure(state, error) {
     state.status = {};
@@ -179,6 +196,19 @@ const mutations = {
   unrestrictFailure(state, error) {
     state.status = {};
     state.readerToUnrestrict = {};
+    state.error = error;
+  },
+
+  // removeCardFromRole
+  removeCardFromRoleRequest(state, id) {
+    state.status = { cardRemoving: true };
+  },
+  removeCardFromRoleSuccess(state, id) {
+    state.status = { cardRemoved: true };
+    state.employees = state.employees.filter(e => e.personCardId !== id);
+  },
+  removeCardFromRoleFailure(state, error) {
+    state.status = {};
     state.error = error;
   }
 };

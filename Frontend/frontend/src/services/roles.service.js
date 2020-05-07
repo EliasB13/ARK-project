@@ -10,7 +10,8 @@ export const rolesService = {
   addCardToRole,
   deleteRole,
   restrictReader,
-  unrestrictReader
+  unrestrictReader,
+  removeCardFromRole
 };
 
 function getRoles() {
@@ -45,7 +46,7 @@ function getRoleEmployees(id) {
     headers: authHeader()
   };
 
-  const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/employees-in-roles/${id}`;
+  const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/employees-in-role/${id}`;
 
   return fetch(requestString, requestOptions).then(
     responseHandler.handleResponse
@@ -80,13 +81,28 @@ function addRole(item) {
 }
 
 function addCardToRole(roleId, cardId) {
+  debugger;
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
-    body: JSON.stringify({ roleId: roleId, cardId: cardId })
+    body: JSON.stringify({ roleId: roleId, personCardId: cardId })
   };
 
   const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/add-employee-to-role`;
+
+  return fetch(requestString, requestOptions).then(
+    responseHandler.handleResponse
+  );
+}
+
+function removeCardFromRole(roleId, cardId) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify({ roleId: roleId, personCardId: cardId })
+  };
+
+  const requestString = `${process.env.VUE_APP_DEV_BACKEND_URL}/api/EmployeesRoles/remove-employee-from-role`;
 
   return fetch(requestString, requestOptions).then(
     responseHandler.handleResponse

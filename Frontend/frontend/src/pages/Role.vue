@@ -10,16 +10,6 @@
             </b-col>
           </b-row>
         </div>
-        <!-- <div slot="raw-content" class="table-responsive">
-          <hr />
-          <paper-table
-            :hoverable="true"
-            :removingMode="removingMode"
-            :data="roles"
-            :columns="tableCols"
-            @click="click"
-          ></paper-table>
-        </div>-->
       </card>
 
       <div class="card p-2 px-4 table-row-hover pointer mt-2 mb-1" @click="employeesCollapseClick">
@@ -37,7 +27,7 @@
       </div>
 
       <b-collapse :id="`employees-collapse-${roleId}`" v-model="showEmployeesCollapse" class="mt-2">
-        <readers-in-role :roleId="parseInt(roleId)"></readers-in-role>
+        <employees-in-role :roleId="parseInt(roleId)"></employees-in-role>
       </b-collapse>
 
       <div class="card p-2 px-4 table-row-hover pointer mt-4 mb-1" @click="readersCollapseClick">
@@ -67,13 +57,15 @@
 </template>
 <script>
 import ReadersInRole from "../components/Roles/ReadersInRole.vue";
+import EmployeesInRole from "../components/Roles/EmployeesInRole.vue";
 import { PaperTable } from "@/components";
 import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
     PaperTable,
-    ReadersInRole
+    ReadersInRole,
+    EmployeesInRole
   },
   props: {
     roleId: [Number, String]
