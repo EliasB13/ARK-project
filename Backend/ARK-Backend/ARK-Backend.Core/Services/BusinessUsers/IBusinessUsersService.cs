@@ -26,6 +26,6 @@ namespace ARK_Backend.Core.Services.BusinessUsers
 		Task<GenericServiceResponse<IEnumerable<ReaderCountStatisticDto>>> GetFullCountStatistic(int businessUserId, DateTime lowerBound, DateTime upperBound);
 		Task<GenericServiceResponse<ReaderStatisticDto>> GetReaderStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound);
 		Task<GenericServiceResponse<ReaderCountStatisticDto>> GetReaderCountStatistic(int businessUserId, int readerId, DateTime lowerBound, DateTime upperBound);
-		Task<GenericServiceResponse<PersonCardStatisticDto>> GetPersonStatistic(int businessUserId, int personId, DateTime lowerBound, DateTime upperBound);
+		Task<GenericServiceResponse<IEnumerable<Observation>>> GetPersonStatistic(int businessUserId, int personId, DateTime lowerBound, DateTime upperBound);
 	}
 }
