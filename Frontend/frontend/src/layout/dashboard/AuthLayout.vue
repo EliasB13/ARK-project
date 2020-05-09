@@ -8,8 +8,8 @@
           <div class="header-body text-center mb-7">
             <div class="row justify-content-center">
               <div class="col-lg-5 col-md-6">
-                <h1>Welcome!</h1>
-                <p class="text-lead">Sign in with your account to start work!</p>
+                <h1>{{ $t("authLayout.welcomeHeader") }}</h1>
+                <p class="text-lead">{{ $t("authLayout.secondaryHeader") }}</p>
               </div>
             </div>
           </div>
@@ -22,8 +22,7 @@
     </div>
   </div>
 </template>
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 <script>
 import { SlideYUpTransition } from "vue2-transitions";
 import { mapState, mapActions } from "vuex";

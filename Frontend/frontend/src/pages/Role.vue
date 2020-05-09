@@ -12,13 +12,16 @@
         </div>
       </card>
 
-      <div class="card p-2 px-4 table-row-hover pointer mt-2 mb-1" @click="employeesCollapseClick">
+      <div
+        class="card p-2 px-4 table-row-hover pointer mt-2 mb-1"
+        @click="employeesCollapseClick"
+      >
         <b-row>
           <b-col cols="auto" align-self="center">
             <i class="ti-id-badge" style="color: green"></i>
           </b-col>
           <b-col cols="auto" class="pl-0" align-self="center">
-            <p class="my-3">Employees</p>
+            <p class="my-3">{{ $t("dashboard.empl") }}</p>
           </b-col>
           <b-col align-self="center" class="text-right">
             <i class="ti-angle-down"></i>
@@ -26,17 +29,24 @@
         </b-row>
       </div>
 
-      <b-collapse :id="`employees-collapse-${roleId}`" v-model="showEmployeesCollapse" class="mt-2">
+      <b-collapse
+        :id="`employees-collapse-${roleId}`"
+        v-model="showEmployeesCollapse"
+        class="mt-2"
+      >
         <employees-in-role :roleId="parseInt(roleId)"></employees-in-role>
       </b-collapse>
 
-      <div class="card p-2 px-4 table-row-hover pointer mt-4 mb-1" @click="readersCollapseClick">
+      <div
+        class="card p-2 px-4 table-row-hover pointer mt-4 mb-1"
+        @click="readersCollapseClick"
+      >
         <b-row>
           <b-col cols="auto" align-self="center">
             <i class="ti-rss-alt" style="color: red"></i>
           </b-col>
           <b-col cols="auto" class="pl-0" align-self="center">
-            <p class="my-3">Readers</p>
+            <p class="my-3">{{ $t("rolePage.readersInRoleTitle") }}</p>
           </b-col>
           <b-col align-self="center" class="text-right">
             <i class="ti-angle-down"></i>
@@ -44,14 +54,18 @@
         </b-row>
       </div>
 
-      <b-collapse :id="`employees-collapse-${roleId}`" v-model="showReadersCollapse" class="mt-2">
+      <b-collapse
+        :id="`employees-collapse-${roleId}`"
+        v-model="showReadersCollapse"
+        class="mt-2"
+      >
         <readers-in-role :roleId="parseInt(roleId)"></readers-in-role>
       </b-collapse>
     </div>
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled mb-2" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>

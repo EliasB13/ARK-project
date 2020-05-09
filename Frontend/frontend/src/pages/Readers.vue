@@ -5,23 +5,31 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Readers</h4>
-              <p class="card-category my-2">Here you can explore and manage your readers</p>
+              <h4 class="card-title">{{ $t("readers.title") }}</h4>
+              <p class="card-category my-2">
+                {{ $t("readers.subTitle") }}
+              </p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete reader</h4>
+              <h4 class="card-title">{{ $t("readers.delete") }}</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
               <p-button v-if="!removingMode" type="success" @click="addClick">
                 <i class="ti-plus"></i>
-                Add
+                {{ $t("addBtn") }}
               </p-button>
-              <p-button v-else-if="removingMode" type="success" @click="resetClick" outline>Reset</p-button>
+              <p-button
+                v-else-if="removingMode"
+                type="success"
+                @click="resetClick"
+                outline
+                >{{ $t("resetBtn") }}</p-button
+              >
             </b-col>
             <b-col cols="auto" align-self="center">
               <p-button type="danger" @click="deleteClick">
                 <i class="ti-close"></i>
-                Remove
+                {{ $t("removeBtn") }}
               </p-button>
             </b-col>
           </b-row>
@@ -41,7 +49,7 @@
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>
@@ -57,24 +65,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "description",
-          displayName: "Description"
-        },
-        {
-          column: "isEntrance",
-          displayName: "Is entrance"
-        }
-      ],
       removingMode: false,
       selectedCards: [],
       showModal: false
@@ -85,6 +75,26 @@ export default {
       readers: state => state.readers.readers,
       status: state => state.readers.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t("readers.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("readers.cols.name")
+        },
+        {
+          column: "description",
+          displayName: this.$t("readers.cols.description")
+        },
+        {
+          column: "isEntrance",
+          displayName: this.$t("readers.cols.isEntrance")
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.status.readersLoading ||
@@ -125,5 +135,4 @@ export default {
   watch: {}
 };
 </script>
-<style>
-</style>
+<style></style>

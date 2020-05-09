@@ -1,4 +1,5 @@
 import { statisticService } from "../../services";
+import i18n from "../../localization/i18n";
 
 const state = {
   fullStat: [],
@@ -157,7 +158,7 @@ const getters = {
           icon: "ti-signal",
           title: r.name,
           value: r.employeesObservationsCount + r.anonymObservationsCount,
-          footerText: "In last month",
+          footerText: i18n.t("dashboard.date"),
           footerIcon: "ti-calendar"
         };
       });

@@ -1,23 +1,31 @@
 <template>
   <div>
     <b-modal v-model="showAddingModal" centered :showClose="false">
-      <div slot="modal-header">Add reader</div>
+      <div slot="modal-header">{{ $t("readers.modal.title") }}</div>
       <template>
         <form role="form">
           <fg-input
             alternative
             class="mb-3"
-            placeholder="Name"
-            label="Name"
+            :placeholder="$t('readers.cols.name')"
+            :label="$t('readers.cols.name')"
             v-model="readerToAdd.name"
           ></fg-input>
-          <fg-input placeholder="Description" label="Description" v-model="readerToAdd.description"></fg-input>
-          <b-form-checkbox v-model="readerToAdd.isEntrance" class="mb-3">Is entrance</b-form-checkbox>
+          <fg-input
+            :placeholder="$t('readers.cols.description')"
+            :label="$t('readers.cols.description')"
+            v-model="readerToAdd.description"
+          ></fg-input>
+          <b-form-checkbox v-model="readerToAdd.isEntrance" class="mb-3">{{
+            $t("readers.modal.isEntrance")
+          }}</b-form-checkbox>
         </form>
       </template>
       <template slot="modal-footer">
-        <p-button simple @click="closeModal">Close</p-button>
-        <p-button type="success" class="ml-auto" @click="addReaderClick">Add reader</p-button>
+        <p-button simple @click="closeModal">{{ $t("closeBtn") }}</p-button>
+        <p-button type="success" class="ml-auto" @click="addReaderClick">{{
+          $t("addBtn")
+        }}</p-button>
       </template>
     </b-modal>
   </div>
@@ -74,5 +82,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal v-model="showAddingModal" centered :showClose="false">
-      <div slot="modal-header">Select readers to restrict</div>
+      <div slot="modal-header">{{ $t("readers.restrictingModal.title") }}</div>
       <template>
         <div class="scrollable-list">
           <paper-table
@@ -14,8 +14,10 @@
         </div>
       </template>
       <template slot="modal-footer">
-        <p-button simple @click="closeModal">Close</p-button>
-        <p-button type="success" class="ml-auto" @click="addReaderClick">Restrict</p-button>
+        <p-button simple @click="closeModal">{{ $t("closeBtn") }}</p-button>
+        <p-button type="success" class="ml-auto" @click="addReaderClick">{{
+          $t("readers.restrictingModal.restrictBtn")
+        }}</p-button>
       </template>
     </b-modal>
   </div>
@@ -32,26 +34,7 @@ export default {
     PaperTable
   },
   data() {
-    return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "description",
-          displayName: "Description"
-        },
-        {
-          column: "isEntrance",
-          displayName: "Is entrance"
-        }
-      ]
-    };
+    return {};
   },
   props: {
     showAddingModal: Boolean,
@@ -63,6 +46,26 @@ export default {
       readers: state => state.readers.readers,
       readersStatus: state => state.readers.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t("rolePage.tableCols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("rolePage.tableCols.name")
+        },
+        {
+          column: "description",
+          displayName: this.$t("rolePage.tableCols.description")
+        },
+        {
+          column: "isEntrance",
+          displayName: this.$t("rolePage.tableCols.isEntrance")
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.readersStatus.readersLoading ||
@@ -106,5 +109,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

@@ -5,14 +5,21 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <p class="card-title">Readers</p>
-              <p class="card-category my-2">Manage readers in role</p>
+              <p class="card-title">{{ $t("rolePage.readersInRoleTitle") }}</p>
+              <p class="card-category my-2">
+                {{ $t("rolePage.readersInRoleSubTitle") }}
+              </p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete reader</h4>
+              <h4 class="card-title">{{ $t("rolePage.deleteReaders") }}</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
-              <p-button v-if="!removingMode" type="success" @click="addClick" size="sm">
+              <p-button
+                v-if="!removingMode"
+                type="success"
+                @click="addClick"
+                size="sm"
+              >
                 <i class="ti-plus"></i>
               </p-button>
               <p-button
@@ -21,7 +28,8 @@
                 @click="resetClick"
                 outline
                 size="sm"
-              >Reset</p-button>
+                >{{ $t("resetBtn") }}</p-button
+              >
             </b-col>
             <b-col cols="auto" align-self="center">
               <p-button type="danger" @click="deleteClick" size="sm">
@@ -41,10 +49,13 @@
         </div>
         <div v-if="showSpinner" class="text-center">
           <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-          <br />Loading
+          <br />{{ $t("spinner") }}
         </div>
       </card>
-      <reader-restricting-modal :showAddingModal="showModal" :roleId="roleId"></reader-restricting-modal>
+      <reader-restricting-modal
+        :showAddingModal="showModal"
+        :roleId="roleId"
+      ></reader-restricting-modal>
     </div>
   </div>
 </template>
@@ -63,24 +74,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "description",
-          displayName: "Description"
-        },
-        {
-          column: "isEntrance",
-          displayName: "Is entrance"
-        }
-      ],
       removingMode: false,
       showModal: false
     };
@@ -90,6 +83,26 @@ export default {
       readers: state => state.role.restrictedReaders,
       status: state => state.role.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t("rolePage.tableCols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("rolePage.tableCols.name")
+        },
+        {
+          column: "description",
+          displayName: this.$t("rolePage.tableCols.description")
+        },
+        {
+          column: "isEntrance",
+          displayName: this.$t("rolePage.tableCols.isEntrance")
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.status.restrictedReadersLoading ||

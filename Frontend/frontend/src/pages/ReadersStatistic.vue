@@ -5,8 +5,10 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Readers statistics</h4>
-              <p class="card-category my-2">Here you can explore your complete readers statistics</p>
+              <h4 class="card-title">{{ $t("readerStatistic.title") }}</h4>
+              <p class="card-category my-2">
+                {{ $t("readerStatistic.subTitle") }}
+              </p>
             </b-col>
           </b-row>
         </div>
@@ -25,7 +27,7 @@
 
     <div class="px-4">
       <i class="ti-info-alt mr-2"></i>
-      <span>Select reader to see all observations it registered</span>
+      <span>{{ $t("readerStatistic.info1") }}</span>
       <br />
       <div class="mt-2">
         <svg
@@ -40,15 +42,13 @@
             d="m489.609 0h-473.118c-9.108 0-16.491 7.383-16.491 16.491v473.118c0 9.107 7.383 16.491 16.491 16.491h473.119c9.107 0 16.49-7.383 16.49-16.491v-473.118c0-9.108-7.383-16.491-16.491-16.491z"
           />
         </svg>
-        <span
-          class="ml-2"
-        >Rows marked with this color mean that observation was restricted (user came to restricted area)</span>
+        <span class="ml-2">{{ $t("readerStatistic.info2") }}</span>
       </div>
     </div>
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>
@@ -62,32 +62,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "description",
-          displayName: "Description"
-        },
-        {
-          column: "isEntrance",
-          displayName: "Is entrance"
-        },
-        {
-          column: "employeesObservationsCount",
-          displayName: "Employees observations count"
-        },
-        {
-          column: "anonymObservationsCount",
-          displayName: "Anonyms observations count"
-        }
-      ],
       removingMode: false,
       selectedCards: [],
       showModal: false
@@ -98,6 +72,36 @@ export default {
       statsStatus: state => state.statistic.status,
       fullCountStat: state => state.statistic.fullCountStat
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t("readerStatistic.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("readerStatistic.cols.name")
+        },
+        {
+          column: "description",
+          displayName: this.$t("readerStatistic.cols.description")
+        },
+        {
+          column: "isEntrance",
+          displayName: this.$t("readerStatistic.cols.isEntrance")
+        },
+        {
+          column: "employeesObservationsCount",
+          displayName: this.$t(
+            "readerStatistic.cols.employeesObservationsCount"
+          )
+        },
+        {
+          column: "anonymObservationsCount",
+          displayName: this.$t("readerStatistic.cols.anonymObservationsCount")
+        }
+      ];
+    },
     showSpinner() {
       return this.statsStatus.fullCountStatLoading;
     }
@@ -121,5 +125,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

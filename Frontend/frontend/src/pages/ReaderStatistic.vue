@@ -24,7 +24,7 @@
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>
@@ -41,30 +41,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          outer: "person",
-          column: "name",
-          displayName: "Name",
-          isInner: true
-        },
-        {
-          outer: "person",
-          column: "surname",
-          displayName: "Surname",
-          isInner: true
-        },
-        {
-          column: "time",
-          displayName: "Time"
-        },
-        {
-          outer: "person",
-          column: "isEmployee",
-          displayName: "Is employee",
-          isInner: true
-        }
-      ],
       removingMode: false,
       selectedCards: [],
       showModal: false
@@ -75,6 +51,32 @@ export default {
       statsStatus: state => state.statistic.status,
       readerStat: state => state.statistic.readerStat
     }),
+    tableCols() {
+      return [
+        {
+          outer: "person",
+          column: "name",
+          displayName: this.$t("readerStatistic.tableCols.name"),
+          isInner: true
+        },
+        {
+          outer: "person",
+          column: "surname",
+          displayName: this.$t("readerStatistic.tableCols.surname"),
+          isInner: true
+        },
+        {
+          column: "time",
+          displayName: this.$t("readerStatistic.tableCols.time")
+        },
+        {
+          outer: "person",
+          column: "isEmployee",
+          displayName: this.$t("readerStatistic.tableCols.isEmpl"),
+          isInner: true
+        }
+      ];
+    },
     showSpinner() {
       return this.statsStatus.readerStatLoading;
     }
@@ -94,5 +96,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

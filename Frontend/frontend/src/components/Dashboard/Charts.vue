@@ -2,35 +2,35 @@
   <div class="row">
     <div class="col-md-6 col-12">
       <chart-card
-        title="Employees / anonyms observations statistic"
-        sub-title="All readers during last month"
+        :title="$t('dashboard.prefChartTitle')"
+        :sub-title="$t('dashboard.prefChartSubTitle')"
         :chart-data="preferencesChart.data"
         chart-type="Pie"
         ref="prefChart"
       >
         <span slot="footer">
-          <i class="ti-timer"></i> In the last month
+          <i class="ti-timer"></i> {{ $t("dashboard.date") }}
         </span>
         <div slot="legend">
-          <i class="fa fa-circle text-info"></i> Employees
-          <i class="fa fa-circle text-warning"></i> Anonyms
+          <i class="fa fa-circle text-info"></i> {{ $t("dashboard.empl") }}
+          <i class="fa fa-circle text-warning"></i> {{ $t("dashboard.anon") }}
         </div>
       </chart-card>
     </div>
 
     <div class="col-md-6 col-12">
       <chart-card
-        title="Employees / anonyms year observations statistic"
-        sub-title="All readers month by month"
+        :title="$t('dashboard.activityChartTitle')"
+        :sub-title="$t('dashboard.activityChartSubTitle')"
         :chart-data="activityChart.data"
         :chart-options="activityChart.options"
       >
         <span slot="footer">
-          <i class="ti-timer"></i> In the last year
+          <i class="ti-timer"></i> {{ $t("dashboard.year") }}
         </span>
         <div slot="legend">
-          <i class="fa fa-circle text-info"></i> Employees
-          <i class="fa fa-circle text-warning"></i> Anonyms
+          <i class="fa fa-circle text-info"></i> {{ $t("dashboard.empl") }}
+          <i class="fa fa-circle text-warning"></i> {{ $t("dashboard.anon") }}
         </div>
       </chart-card>
     </div>
@@ -51,18 +51,18 @@ export default {
       activityChart: {
         data: {
           labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
+            this.$t("dashboard.months.Jan"),
+            this.$t("dashboard.months.Feb"),
+            this.$t("dashboard.months.Mar"),
+            this.$t("dashboard.months.Apr"),
+            this.$t("dashboard.months.May"),
+            this.$t("dashboard.months.Jun"),
+            this.$t("dashboard.months.Jul"),
+            this.$t("dashboard.months.Aug"),
+            this.$t("dashboard.months.Sep"),
+            this.$t("dashboard.months.Oct"),
+            this.$t("dashboard.months.Nov"),
+            this.$t("dashboard.months.Dec")
           ],
           series: [
             [542, 543, 520, 680, 653, 753, 326, 434, 568, 610, 756, 895],

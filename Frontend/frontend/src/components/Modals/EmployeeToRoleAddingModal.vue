@@ -1,7 +1,13 @@
 <template>
   <div>
-    <b-modal v-model="showAddingModal" centered :showClose="false" size="lg" no-close-on-backdrop>
-      <div slot="modal-header">Select employees to add</div>
+    <b-modal
+      v-model="showAddingModal"
+      centered
+      :showClose="false"
+      size="lg"
+      no-close-on-backdrop
+    >
+      <div slot="modal-header">{{ $t("rolesPage.modal.title") }}</div>
       <template>
         <div class="scrollable-list">
           <paper-table
@@ -14,8 +20,10 @@
         </div>
       </template>
       <template slot="modal-footer">
-        <p-button simple @click="closeModal">Close</p-button>
-        <p-button type="success" class="ml-auto" @click="addReaderClick">Add employees</p-button>
+        <p-button simple @click="closeModal">{{ $t("closeBtn") }}</p-button>
+        <p-button type="success" class="ml-auto" @click="addReaderClick">{{
+          $t("addBtn")
+        }}</p-button>
       </template>
     </b-modal>
   </div>
@@ -32,38 +40,7 @@ export default {
     PaperTable
   },
   data() {
-    return {
-      tableCols: [
-        {
-          column: "personCardId",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "surname",
-          displayName: "Surname"
-        },
-        {
-          column: "isEmployee",
-          displayName: "Is employee"
-        },
-        {
-          column: "employeesRoleId",
-          displayName: "Role"
-        },
-        {
-          column: "workingDayStartTime",
-          displayName: "Working day starts at"
-        },
-        {
-          column: "workingDayEndTime",
-          displayName: "Working day ends at"
-        }
-      ]
-    };
+    return {};
   },
   props: {
     showAddingModal: Boolean,
@@ -75,6 +52,38 @@ export default {
       cards: state => state.cards.cards,
       cardsStatus: state => state.cards.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "personCardId",
+          displayName: this.$t("rolePage.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("rolePage.cols.name")
+        },
+        {
+          column: "surname",
+          displayName: this.$t("rolePage.cols.surname")
+        },
+        {
+          column: "isEmployee",
+          displayName: this.$t("rolePage.cols.isEmpl")
+        },
+        {
+          column: "employeesRoleId",
+          displayName: this.$t("rolePage.cols.role")
+        },
+        {
+          column: "workingDayStartTime",
+          displayName: this.$t("rolePage.cols.start")
+        },
+        {
+          column: "workingDayEndTime",
+          displayName: this.$t("rolePage.cols.end")
+        }
+      ];
+    },
     showSpinner() {
       return this.cardsStatus.cardsLoading || this.status.cardAdding;
     }
@@ -114,5 +123,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

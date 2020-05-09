@@ -5,10 +5,10 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Person cards statistic</h4>
-              <p
-                class="card-category my-2"
-              >Here you can explore complete statistic about your person cards</p>
+              <h4 class="card-title">{{ $t("personStatistic.title") }}</h4>
+              <p class="card-category my-2">
+                {{ $t("personStatistic.subTitle") }}
+              </p>
             </b-col>
           </b-row>
         </div>
@@ -28,7 +28,7 @@
 
     <div class="px-4">
       <i class="ti-info-alt mr-2"></i>
-      <span>Select person to see all observations it registered</span>
+      <span>{{ $t("personStatistic.info1") }}</span>
       <br />
       <div class="mt-2">
         <svg
@@ -43,15 +43,13 @@
             d="m489.609 0h-473.118c-9.108 0-16.491 7.383-16.491 16.491v473.118c0 9.107 7.383 16.491 16.491 16.491h473.119c9.107 0 16.49-7.383 16.49-16.491v-473.118c0-9.108-7.383-16.491-16.491-16.491z"
           />
         </svg>
-        <span
-          class="ml-2"
-        >Rows marked with this color mean that observation was restricted (user came to restricted area)</span>
+        <span class="ml-2">{{ $t("personStatistic.info2") }}</span>
       </div>
     </div>
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>
@@ -67,36 +65,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "personCardId",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "surname",
-          displayName: "Surname"
-        },
-        {
-          column: "isEmployee",
-          displayName: "Is employee"
-        },
-        {
-          column: "employeesRoleId",
-          displayName: "Role"
-        },
-        {
-          column: "workingDayStartTime",
-          displayName: "Working day starts at"
-        },
-        {
-          column: "workingDayEndTime",
-          displayName: "Working day ends at"
-        }
-      ],
       removingMode: false,
       selectedCards: [],
       showModal: false
@@ -109,6 +77,38 @@ export default {
       roles: state => state.roles.roles,
       rolesStatus: state => state.roles.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "personCardId",
+          displayName: this.$t("personCardsPage.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("personCardsPage.cols.name")
+        },
+        {
+          column: "surname",
+          displayName: this.$t("personCardsPage.cols.surname")
+        },
+        {
+          column: "isEmployee",
+          displayName: this.$t("personCardsPage.cols.isEmpl")
+        },
+        {
+          column: "employeesRoleId",
+          displayName: this.$t("personCardsPage.cols.role")
+        },
+        {
+          column: "workingDayStartTime",
+          displayName: this.$t("personCardsPage.cols.start")
+        },
+        {
+          column: "workingDayEndTime",
+          displayName: this.$t("personCardsPage.cols.end")
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.status.cardsLoading ||
@@ -163,5 +163,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

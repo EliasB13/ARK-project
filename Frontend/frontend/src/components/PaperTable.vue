@@ -2,7 +2,9 @@
   <table class="table" :class="tableClass">
     <thead>
       <slot name="columns">
-        <th v-for="column in columns" :key="column.column">{{ column.displayName }}</th>
+        <th v-for="column in columns" :key="column.column">
+          {{ column.displayName }}
+        </th>
       </slot>
     </thead>
     <tbody>
@@ -14,10 +16,13 @@
           isSelected(index) ? 'item-selected' : 'item-deselected',
           hoverable ? 'table-row-hover' : '',
           hoverable && !removingMode ? 'table-row-hover-bg-color' : '',
-          item.isRestricted ? 'table-row-restricted' : '']"
+          item.isRestricted ? 'table-row-restricted' : ''
+        ]"
       >
         <slot :row="item">
-          <td v-for="(column, index) in columns" :key="index">{{ itemValue(item, column) }}</td>
+          <td v-for="(column, index) in columns" :key="index">
+            {{ itemValue(item, column) }}
+          </td>
         </slot>
       </tr>
     </tbody>
@@ -59,6 +64,13 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      if (column.column === "time") {
+        let date = new Date(item[column.column]);
+        debugger;
+        return this.$i18n.locale === "en"
+          ? this.$d(date, "long")
+          : `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+      }
       if (typeof item[column.column] === "boolean") {
         return item[column.column] ? "+" : "-";
       }

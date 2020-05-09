@@ -6,13 +6,13 @@
           <div class="card-body px-lg-5 py-lg-5">
             <form role="form">
               <fg-input
-                placeholder="Login"
+                :placeholder="$t('loginPage.loginPlaceholder')"
                 addon-left-icon="ti-key"
                 v-model="loginInput"
               ></fg-input>
 
               <fg-input
-                placeholder="Password"
+                :placeholder="$t('loginPage.passwordPlaceholder')"
                 addon-left-icon="ti-key"
                 type="password"
                 v-model="passwordInput"
@@ -27,7 +27,7 @@
                   @click="handleSignIn"
                   type="success"
                   class="mt-4"
-                  >Sign In</p-button
+                  >{{ $t("loginPage.signInBtn") }}</p-button
                 >
               </div>
             </form>

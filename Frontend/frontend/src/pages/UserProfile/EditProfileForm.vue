@@ -1,13 +1,23 @@
 <template>
-  <card class="card" title="Edit Profile">
+  <card class="card" :title="$t('registerPage.editTitle')">
     <div>
       <form @submit.prevent>
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" label="Username" placeholder="Username" v-model="localUser.login"></fg-input>
+            <fg-input
+              type="text"
+              :label="$t('registerPage.loginPlaceholder')"
+              :placeholder="$t('registerPage.loginPlaceholder')"
+              v-model="localUser.login"
+            ></fg-input>
           </div>
           <div class="col-md-6">
-            <fg-input type="text" label="Email" placeholder="Email" v-model="localUser.email"></fg-input>
+            <fg-input
+              type="text"
+              :label="$t('registerPage.emailPlaceholder')"
+              :placeholder="$t('registerPage.emailPlaceholder')"
+              v-model="localUser.email"
+            ></fg-input>
           </div>
         </div>
 
@@ -17,8 +27,8 @@
           <div class="col-md-12">
             <fg-input
               type="text"
-              label="Company"
-              placeholder="Company"
+              :label="$t('registerPage.companyNamePlaceholder')"
+              :placeholder="$t('registerPage.companyNamePlaceholder')"
               v-model="localUser.companyName"
             ></fg-input>
           </div>
@@ -26,10 +36,20 @@
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" label="Address" placeholder="Address" v-model="localUser.address"></fg-input>
+            <fg-input
+              type="text"
+              :label="$t('registerPage.addressPlaceholder')"
+              :placeholder="$t('registerPage.addressPlaceholder')"
+              v-model="localUser.address"
+            ></fg-input>
           </div>
           <div class="col-md-6">
-            <fg-input type="text" label="Phone" placeholder="Phone" v-model="localUser.phone"></fg-input>
+            <fg-input
+              type="text"
+              :label="$t('registerPage.phonePlaceholder')"
+              :placeholder="$t('registerPage.phonePlaceholder')"
+              v-model="localUser.phone"
+            ></fg-input>
           </div>
         </div>
 
@@ -38,18 +58,20 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Description</label>
+              <label>{{ $t("registerPage.descriptionPlaceholder") }}</label>
               <textarea
                 rows="5"
                 class="form-control border-input"
-                placeholder="Here can be your description"
+                :placeholder="$t('registerPage.descriptionPlaceholder')"
                 v-model="localUser.description"
               ></textarea>
             </div>
           </div>
         </div>
         <div class="text-center">
-          <p-button type="info" round @click="updateProfile">Update Profile</p-button>
+          <p-button type="info" round @click="updateProfile">{{
+            $t("registerPage.updateProfileBtn")
+          }}</p-button>
         </div>
         <div class="clearfix"></div>
       </form>

@@ -5,23 +5,23 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Employees roles</h4>
-              <p class="card-category my-2">Here you can explore and manage your employees roles</p>
+              <h4 class="card-title">{{ $t('rolesPage.rolesTitle') }}</h4>
+              <p class="card-category my-2">{{ $t('rolesPage.rolesSubTitle') }}</p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete role</h4>
+              <h4 class="card-title">{{ $t('rolesPage.deleteRole') }}</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
               <p-button v-if="!removingMode" type="success" @click="addClick">
                 <i class="ti-plus"></i>
-                Add
+                {{ $t('addBtn') }}
               </p-button>
-              <p-button v-else-if="removingMode" type="success" @click="resetClick" outline>Reset</p-button>
+              <p-button v-else-if="removingMode" type="success" @click="resetClick" outline>{{ $t('resetBtn') }}</p-button>
             </b-col>
             <b-col cols="auto" align-self="center">
               <p-button type="danger" @click="deleteClick">
                 <i class="ti-close"></i>
-                Remove
+                {{ $t('removeBtn') }}
               </p-button>
             </b-col>
           </b-row>
@@ -59,24 +59,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "description",
-          displayName: "Description"
-        },
-        {
-          column: "isAnonymous",
-          displayName: "Is anonymous"
-        }
-      ],
       removingMode: false,
       showModal: false
     };
@@ -86,6 +68,26 @@ export default {
       roles: state => state.roles.roles,
       status: state => state.roles.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t('rolesPage.cols.number')
+        },
+        {
+          column: "name",
+          displayName: this.$t('rolesPage.cols.name')
+        },
+        {
+          column: "description",
+          displayName: this.$t('rolesPage.cols.description')
+        },
+        {
+          column: "isAnonymous",
+          displayName: this.$t('rolesPage.cols.isAnon')
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.status.rolesLoading ||

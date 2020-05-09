@@ -8,20 +8,29 @@
             href="https://github.com/EliasB13"
             class="font-weight-bold ml-1"
             target="_blank"
-          >EliasB13</a>
+            >EliasB13</a
+          >
         </div>
       </div>
       <div class="col-xl-6">
-        <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+        <ul
+          class="nav nav-footer justify-content-center justify-content-xl-end"
+        >
           <li class="nav-item" @click="changeLang('ua')">
-            <div class="nav-link pointer">
-              <img class="thumbnail-locale mr-3" src="@/assets/img/locales/ua.png" />
+            <div class="nav-link pointer locale-btn-hover">
+              <img
+                class="thumbnail-locale mr-3"
+                src="@/assets/img/locales/ua.png"
+              />
               Українська
             </div>
           </li>
           <li class="nav-item" @click="changeLang('en')">
-            <div class="nav-link pointer">
-              <img class="thumbnail-locale mr-3" src="@/assets/img/locales/uk.png" />
+            <div class="nav-link pointer locale-btn-hover">
+              <img
+                class="thumbnail-locale mr-3"
+                src="@/assets/img/locales/uk.png"
+              />
               English
             </div>
           </li>
@@ -37,8 +46,12 @@ export default {
       year: new Date().getFullYear(),
       showMenu: false
     };
+  },
+  methods: {
+    changeLang(lang) {
+      this.$i18n.locale = lang;
+    }
   }
 };
 </script>
-<style>
-</style>
+<style></style>

@@ -12,7 +12,11 @@
         </div>
         <div slot="raw-content" class="table-responsive">
           <hr />
-          <paper-table :data="personStat" :columns="tableCols" @click="click"></paper-table>
+          <paper-table
+            :data="personStat"
+            :columns="tableCols"
+            @click="click"
+          ></paper-table>
         </div>
       </card>
     </div>
@@ -36,22 +40,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "id",
-          displayName: "Number"
-        },
-        {
-          outer: "reader",
-          isInner: true,
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "time",
-          displayName: "Time"
-        }
-      ],
       personName: "",
       personSurname: ""
     };
@@ -61,6 +49,24 @@ export default {
       personStat: state => state.statistic.personStat,
       status: state => state.statistic.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "id",
+          displayName: this.$t("personStatistic.cols.number")
+        },
+        {
+          outer: "reader",
+          isInner: true,
+          column: "name",
+          displayName: this.$t("personStatistic.cols.name")
+        },
+        {
+          column: "time",
+          displayName: this.$t("personStatistic.cols.time")
+        }
+      ];
+    },
     showSpinner() {
       return this.status.personStatLoading;
     }
@@ -92,5 +98,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

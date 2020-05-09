@@ -1,5 +1,5 @@
 import { userService } from "../services/user.service";
-//import i18n from "../localization/i18n";
+import i18n from "../localization/i18n";
 
 export const responseHandler = {
   handleResponse,
@@ -15,7 +15,6 @@ function handleResponse(response) {
         location.reload(true);
       }
 
-      //const error = parseError(data, response.statusText);
       if (data.code) {
         const error = getLocaleError(data);
         return Promise.reject(error);
@@ -53,6 +52,5 @@ function parseModelErrors(data) {
 
 function getLocaleError(data) {
   if (data.code == 999) return data.message;
-  //return "errorCode." + data.code.toString();
-  return data.message;
+  return i18n.t("errorCode." + data.code.toString());
 }

@@ -5,14 +5,21 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <p class="card-title">Employees</p>
-              <p class="card-category my-2">Manage employees in role</p>
+              <p class="card-title">{{ $t("dashboard.empl") }}</p>
+              <p class="card-category my-2">
+                {{ $t("rolePage.employeesInRoleSubTitle") }}
+              </p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete employees</h4>
+              <h4 class="card-title">{{ $t("rolePage.deleteEmpl") }}</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
-              <p-button v-if="!removingMode" type="success" @click="addClick" size="sm">
+              <p-button
+                v-if="!removingMode"
+                type="success"
+                @click="addClick"
+                size="sm"
+              >
                 <i class="ti-plus"></i>
               </p-button>
               <p-button
@@ -21,7 +28,8 @@
                 @click="resetClick"
                 outline
                 size="sm"
-              >Reset</p-button>
+                >{{ $t("resetBtn") }}</p-button
+              >
             </b-col>
             <b-col cols="auto" align-self="center">
               <p-button type="danger" @click="deleteClick" size="sm">
@@ -41,10 +49,13 @@
         </div>
         <div v-if="showSpinner" class="text-center">
           <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-          <br />Loading
+          <br />{{ $t("spinner") }}
         </div>
       </card>
-      <employee-adding-modal :showAddingModal="showModal" :roleId="roleId"></employee-adding-modal>
+      <employee-adding-modal
+        :showAddingModal="showModal"
+        :roleId="roleId"
+      ></employee-adding-modal>
     </div>
   </div>
 </template>
@@ -64,36 +75,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "personCardId",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "surname",
-          displayName: "Surname"
-        },
-        {
-          column: "isEmployee",
-          displayName: "Is employee"
-        },
-        {
-          column: "employeesRoleId",
-          displayName: "Role"
-        },
-        {
-          column: "workingDayStartTime",
-          displayName: "Working day starts at"
-        },
-        {
-          column: "workingDayEndTime",
-          displayName: "Working day ends at"
-        }
-      ],
       removingMode: false,
       showModal: false
     };
@@ -103,6 +84,38 @@ export default {
       employees: state => state.role.employees,
       status: state => state.role.status
     }),
+    tableCols() {
+      return [
+        {
+          column: "personCardId",
+          displayName: this.$t("rolePage.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("rolePage.cols.name")
+        },
+        {
+          column: "surname",
+          displayName: this.$t("rolePage.cols.surname")
+        },
+        {
+          column: "isEmployee",
+          displayName: this.$t("rolePage.cols.isEmpl")
+        },
+        {
+          column: "employeesRoleId",
+          displayName: this.$t("rolePage.cols.role")
+        },
+        {
+          column: "workingDayStartTime",
+          displayName: this.$t("rolePage.cols.start")
+        },
+        {
+          column: "workingDayEndTime",
+          displayName: this.$t("rolePage.cols.end")
+        }
+      ];
+    },
     showSpinner() {
       return (
         this.status.employeesLoading ||

@@ -6,35 +6,37 @@
           <div class="card-body px-lg-5 py-lg-5">
             <form role="form">
               <fg-input
-                placeholder="Login"
+                :placeholder="$t('registerPage.loginPlaceholder')"
                 v-model="loginInput"
                 :valid="isLoginValid"
                 :error="getLoginError"
               ></fg-input>
 
               <fg-input
-                placeholder="Email"
+                :placeholder="$t('registerPage.emailPlaceholder')"
                 type="email"
                 v-model="email"
                 :valid="isEmailValid"
                 :error="getEmailError"
               ></fg-input>
               <fg-input
-                placeholder="Company name"
+                :placeholder="$t('registerPage.companyNamePlaceholder')"
                 type="text"
                 v-model="companyName"
                 :valid="isCompanyNameValid"
                 :error="getCompanyNameError"
               ></fg-input>
               <fg-input
-                placeholder="Password"
+                :placeholder="$t('registerPage.passwordPlaceholder')"
                 type="password"
                 v-model="password"
                 :valid="isPasswordValid"
                 :error="getPasswordError"
               ></fg-input>
               <fg-input
-                placeholder="Password confirmation"
+                :placeholder="
+                  $t('registerPage.passwordConfirmationPlaceholder')
+                "
                 type="password"
                 v-model="passwordConfirmation"
                 :valid="isPasswordConfirmationValid"
@@ -42,9 +44,9 @@
               ></fg-input>
 
               <div class="text-center">
-                <p-button @click="handleSignUp" type="danger" class="mt-4"
-                  >Sign Up</p-button
-                >
+                <p-button @click="handleSignUp" type="danger" class="mt-4">{{
+                  $t("registerPage.signUpBtn")
+                }}</p-button>
               </div>
             </form>
           </div>
@@ -105,35 +107,35 @@ export default {
     getLoginError() {
       if (this.loginInput === "") return "";
       if (this.loginInput.length < 5 || this.loginInput.length > 23)
-        return "Wrong login length";
+        return this.$t("registerPage.error.login.length");
       if (this.loginInput.charAt(0) >= "0" && this.loginInput.charAt(0) <= "9")
-        return "Login can starts only with digits";
+        return this.$t("registerPage.error.login.startsWithDigit");
       if (!/^[a-zA-z0-9]+$/.test(this.loginInput))
-        return "Login can contain only latin symbols";
+        return this.$t("registerPage.error.login.onlyLatin");
       return "";
     },
     getPasswordError() {
       if (this.password === "") return "";
       if (this.password.length < 6 || this.password.length > 23)
-        return "Wrong password length";
+        return this.$t("registerPage.error.password.length");
       return "";
     },
     getPasswordConfirmationError() {
       if (this.password != this.passwordConfirmation)
-        return "Password and password confirmation don't match";
+        return this.$t("registerPage.error.password.passwordConfirmation");
       return "";
     },
     getEmailError() {
       if (this.email === "" && !this.isSubmitted) return null;
       var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!regex.test(String(this.email).toLowerCase()))
-        return "Wrong email format";
+        return this.$t("registerPage.error.email");
       return "";
     },
     getCompanyNameError() {
-      if (this.firstName === "") return "";
-      if (!/^([^,.;+=()"#@!$%\^&*]*)$/.test(this.firstName))
-        return "Company name can contain only digits";
+      if (this.companyName === "") return "";
+      if (!/^([^,.;+=()"#@!$%\^&*]*)$/.test(this.companyName))
+        return this.$t("registerPage.error.companyName.onlyDigits");
       return "";
     },
     showSpinner() {

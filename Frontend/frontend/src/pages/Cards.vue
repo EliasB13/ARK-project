@@ -5,23 +5,31 @@
         <div slot="header">
           <b-row>
             <b-col v-if="!removingMode">
-              <h4 class="card-title">Person cards</h4>
-              <p class="card-category my-2">Here you can explore and manage your person cards</p>
+              <h4 class="card-title">{{ $t("personCardsPage.header") }}</h4>
+              <p class="card-category my-2">
+                {{ $t("personCardsPage.subheader") }}
+              </p>
             </b-col>
             <b-col v-else-if="removingMode">
-              <h4 class="card-title">Delete card</h4>
+              <h4 class="card-title">{{ $t("personCardsPage.deleteBtn") }}</h4>
             </b-col>
             <b-col cols="auto pr-0" align-self="center">
               <p-button v-if="!removingMode" type="success" @click="addClick">
                 <i class="ti-plus"></i>
-                Add
+                {{ $t("personCardsPage.addBtn") }}
               </p-button>
-              <p-button v-else-if="removingMode" type="success" @click="resetClick" outline>Reset</p-button>
+              <p-button
+                v-else-if="removingMode"
+                type="success"
+                @click="resetClick"
+                outline
+                >{{ $t("personCardsPage.resetBtn") }}</p-button
+              >
             </b-col>
             <b-col cols="auto" align-self="center">
               <p-button type="danger" @click="deleteClick">
                 <i class="ti-close"></i>
-                Remove
+                {{ $t("personCardsPage.removeBtn") }}
               </p-button>
             </b-col>
           </b-row>
@@ -41,7 +49,7 @@
 
     <div id="overlay" v-if="showSpinner">
       <b-spinner class="spinner-scaled" label="loading"></b-spinner>
-      <br />Loading
+      <br />{{ $t("spinner") }}
     </div>
   </div>
 </template>
@@ -57,36 +65,6 @@ export default {
   },
   data() {
     return {
-      tableCols: [
-        {
-          column: "personCardId",
-          displayName: "Number"
-        },
-        {
-          column: "name",
-          displayName: "Name"
-        },
-        {
-          column: "surname",
-          displayName: "Surname"
-        },
-        {
-          column: "isEmployee",
-          displayName: "Is employee"
-        },
-        {
-          column: "employeesRoleId",
-          displayName: "Role"
-        },
-        {
-          column: "workingDayStartTime",
-          displayName: "Working day starts at"
-        },
-        {
-          column: "workingDayEndTime",
-          displayName: "Working day ends at"
-        }
-      ],
       removingMode: false,
       selectedCards: [],
       showModal: false
@@ -112,6 +90,38 @@ export default {
     },
     showItems() {
       return this.status.itemsLoaded;
+    },
+    tableCols() {
+      return [
+        {
+          column: "personCardId",
+          displayName: this.$t("personCardsPage.cols.number")
+        },
+        {
+          column: "name",
+          displayName: this.$t("personCardsPage.cols.name")
+        },
+        {
+          column: "surname",
+          displayName: this.$t("personCardsPage.cols.surname")
+        },
+        {
+          column: "isEmployee",
+          displayName: this.$t("personCardsPage.cols.isEmpl")
+        },
+        {
+          column: "employeesRoleId",
+          displayName: this.$t("personCardsPage.cols.role")
+        },
+        {
+          column: "workingDayStartTime",
+          displayName: this.$t("personCardsPage.cols.start")
+        },
+        {
+          column: "workingDayEndTime",
+          displayName: this.$t("personCardsPage.cols.end")
+        }
+      ];
     }
   },
   methods: {
@@ -165,9 +175,11 @@ export default {
           e.employeesRoleId = role.name == undefined ? "Anonymous" : role.name;
         return e;
       });
+    },
+    locale: function(newV, oldV) {
+      debugger;
     }
   }
 };
 </script>
-<style>
-</style>
+<style></style>

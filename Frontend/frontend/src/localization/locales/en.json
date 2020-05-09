@@ -1,0 +1,214 @@
+{
+  "loginPage": {
+    "loginPlaceholder": "Login",
+    "passwordPlaceholder": "Password",
+    "signInBtn": "Sign In"
+  },
+  "authLayout": {
+    "welcomeHeader": "Welcome!",
+    "secondaryHeader": "Sign in with your account to start work!"
+  },
+  "registerPage": {
+    "loginPlaceholder": "Login",
+    "passwordPlaceholder": "Password",
+    "passwordConfirmationPlaceholder": "Password confirmation",
+    "emailPlaceholder": "Email",
+    "companyNamePlaceholder": "Company name",
+    "signUpBtn": "Sign up",
+    "addressPlaceholder": "Address",
+    "descriptionPlaceholder": "Description",
+    "phonePlaceholder": "Phone",
+    "editTitle": "Edit profile",
+    "updateProfileBtn": "Update profile",
+    "error": {
+      "login": {
+        "length": "Login must be more than 4 letters and less than 24",
+        "startsWithDigit": "Login can't starts with digit",
+        "onlyLatin": "Login can contain only latin chars"
+      },
+      "password": {
+        "length": "Password must be more than 5 symbols and less than 24",
+        "passwordConfirmation": "Password and confirmation don't match"
+      },
+      "email": "Provide valid email, e. g. user@example.com",
+      "companyName": {
+        "onlyDigits": "Company name can contain only letters and - _"
+      }
+    }
+  },
+  "layout": {
+    "userProfile": "User profile",
+    "logout": "Logout"
+  },
+  "personCardsPage": {
+    "header": "Person cards",
+    "subheader": "Here you can explore and manage your person cards",
+    "deleteBtn": "Delete cards",
+    "addBtn": "Add",
+    "resetBtn": "Reset",
+    "removeBtn": "Remove",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "surname": "Surname",
+      "isEmpl": "Is employee",
+      "role": "Role",
+      "start": "Working day starts at",
+      "end": "Working day ends at"
+    },
+    "modal": {
+      "title": "Add person card",
+      "isEmpl": "Is employee",
+      "start": "Working day starts at",
+      "end": "Working day ends at",
+      "role": "Employees role",
+      "name": "Name",
+      "surname": "Surname"
+    }
+  },
+  "dashboard": {
+    "readersBtn": "Readers statistic",
+    "personsBtn": "Persons statistic",
+    "date": "In last month",
+    "year": "In the last year",
+    "empl": "Employees",
+    "anon": "Anonyms",
+    "months": {
+      "Jan": "Jan",
+      "Feb": "Feb",
+      "Mar": "Mar",
+      "Apr": "Apr",
+      "May": "May",
+      "Jun": "Jun",
+      "Jul": "Jul",
+      "Aug": "Aug",
+      "Sep": "Sep",
+      "Oct": "Oct",
+      "Nov": "Nov",
+      "Dec": "Dec"
+    },
+    "activityChartTitle": "Employees / anonyms year observations statistic",
+    "activityChartSubTitle": "All readers month by month",
+    "prefChartTitle": "Employees / anonyms observations statistic",
+    "prefChartSubTitle": "All readers during last month"
+  },
+  "rolePage": {
+    "employeesInRoleSubTitle": "Manage employees in role",
+    "deleteEmpl": "Delete employees",
+    "deleteReaders": "Delete readers",
+    "readersInRoleTitle": "Readers",
+    "readersInRoleSubTitle": "Manage readers in role",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "surname": "Surname",
+      "isEmpl": "Is employee",
+      "role": "Role",
+      "start": "Working day starts at",
+      "end": "Working day ends at"
+    },
+    "tableCols": {
+      "number": "Number",
+      "name": "Name",
+      "description": "Description",
+      "isEntrance": "Is entrance"
+    },
+    "modal": {
+      "title": "Add employees role",
+      "name": "Name",
+      "description": "Description"
+    }
+  },
+  "rolesPage": {
+    "rolesTitle": "Employees roles",
+    "rolesSubTitle": "Here you can explore and manage your employees roles",
+    "deleteRole": "Delete roles",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "description": "Descripton",
+      "isAnon": "Is anonymous"
+    },
+    "modal": {
+      "title": "Select employees to add"
+    }
+  },
+  "personStatistic": {
+    "title": "Person cards statistic",
+    "subTitle": "Here you can explore complete statistic about your person cards",
+    "info1": "Select person to see all observations it registered",
+    "info2": "Rows marked with this color mean that observation was restricted (user came to restricted area)",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "time": "Time"
+    }
+  },
+  "readerStatistic": {
+    "title": "Reader statistic",
+    "subTitle": "Here you can explore your complete readers statistics",
+    "info1": "Select reader to see all observations it registered",
+    "info2": "Rows marked with this color mean that observation was restricted (user came to restricted area)",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "description": "Description",
+      "isEntrance": "Is entrance",
+      "employeesObservationsCount": "Employees observations count",
+      "anonymObservationsCount": "Anonyms observations count"
+    },
+    "tableCols": {
+      "name": "Name",
+      "surname": "Surname",
+      "time": "Time",
+      "isEmpl": "Is employee"
+    }
+  },
+  "readers": {
+    "title": "Readers",
+    "subTitle": "Here you can explore and manage your readers",
+    "delete": "Delete readers",
+    "cols": {
+      "number": "Number",
+      "name": "Name",
+      "description": "Description",
+      "isEntrance": "Is entrance"
+    },
+    "modal": {
+      "title": "Add reader",
+      "isEntrance": "Is entrance"
+    },
+    "restrictingModal": {
+      "title": "Select readers to restrict",
+      "restrictBtn": "Restrict"
+    }
+  },
+  "spinner": "Loading",
+  "addBtn": "Add",
+  "resetBtn": "Reset",
+  "removeBtn": "Remove",
+  "closeBtn": "Close",
+  "errorCode": {
+    "99": "Server error",
+    "100": "User was not found",
+    "101": "Login or password is incorrect",
+    "102": "Login already taken",
+    "103": "Email already taken",
+    "104": "Wrong params",
+    "105": "Role wasn't found",
+    "106": "Wrong working day bounds",
+    "107": "Anonymous employees role was not found",
+    "108": "Person card wasn't found",
+    "109": "Wrong time bounds",
+    "110": "Reader wasn't found",
+    "112": "Role doesn't belong to business user",
+    "113": "Role is anonymous",
+    "114": "Role already exists",
+    "115": "Employee alreadt exists",
+    "116": "Employee wasn't found",
+    "117": "Reader already restricted",
+    "118": "Reader isn't restricted",
+    "119": "Persong is not employee",
+    "120": "File wasn't found"
+  }
+}

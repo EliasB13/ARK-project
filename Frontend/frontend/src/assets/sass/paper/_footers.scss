@@ -39,3 +39,10 @@
     color: $danger-color;
   }
 }
+
+.locale-btn-hover {
+  &:hover {
+    cursor: pointer;
+    color: blue !important;
+  }
+}

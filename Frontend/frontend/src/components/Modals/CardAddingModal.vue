@@ -1,21 +1,28 @@
 <template>
   <div>
     <b-modal v-model="showAddingModal" centered :showClose="false">
-      <div slot="modal-header">Add person card</div>
+      <div slot="modal-header">{{ $t("personCardsPage.modal.title") }}</div>
       <template>
         <form role="form">
           <fg-input
             alternative
             class="mb-3"
-            placeholder="Name"
-            label="Name"
+            :placeholder="$t('personCardsPage.modal.name')"
+            :label="$t('personCardsPage.modal.name')"
             v-model="cardToAdd.name"
           ></fg-input>
-          <fg-input alternative placeholder="surname" label="Surname" v-model="cardToAdd.surname"></fg-input>
-          <b-form-checkbox v-model="cardToAdd.isEmployee" class="mb-3">Is employee</b-form-checkbox>
+          <fg-input
+            alternative
+            :placeholder="$t('personCardsPage.modal.surname')"
+            :label="$t('personCardsPage.modal.surname')"
+            v-model="cardToAdd.surname"
+          ></fg-input>
+          <b-form-checkbox v-model="cardToAdd.isEmployee" class="mb-3">{{
+            $t("personCardsPage.modal.isEmpl")
+          }}</b-form-checkbox>
           <div v-if="cardToAdd.isEmployee">
             <div>
-              <label>Working day starts at</label>
+              <label>{{ $t("personCardsPage.modal.start") }}</label>
               <br />
               <vue-timepicker
                 advanced-keyboard
@@ -26,7 +33,7 @@
             </div>
             <br />
             <div class="mb-1">
-              <label>Working day ends at</label>
+              <label>{{ $t("personCardsPage.modal.end") }}</label>
               <br />
               <vue-timepicker
                 advanced-keyboard
@@ -35,16 +42,23 @@
               ></vue-timepicker>
             </div>
             <div class="mt-3">
-              <label>Employees role</label>
+              <label>{{ $t("personCardsPage.modal.role") }}</label>
               <br />
-              <b-form-select v-model="cardToAdd.employeesRoleId" :options="options"></b-form-select>
+              <b-form-select
+                v-model="cardToAdd.employeesRoleId"
+                :options="options"
+              ></b-form-select>
             </div>
           </div>
         </form>
       </template>
       <template slot="modal-footer">
-        <p-button simple @click="closeModalClick">Close</p-button>
-        <p-button type="success" class="ml-auto" @click="addCardClick">Add card</p-button>
+        <p-button simple @click="closeModalClick">{{
+          $t("closeBtn")
+        }}</p-button>
+        <p-button type="success" class="ml-auto" @click="addCardClick">{{
+          $t("addBtn")
+        }}</p-button>
       </template>
     </b-modal>
   </div>
