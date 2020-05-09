@@ -13,7 +13,8 @@
         :class="[
           isSelected(index) ? 'item-selected' : 'item-deselected',
           hoverable ? 'table-row-hover' : '',
-          hoverable && !removingMode ? 'table-row-hover-bg-color' : '']"
+          hoverable && !removingMode ? 'table-row-hover-bg-color' : '',
+          item.isRestricted ? 'table-row-restricted' : '']"
       >
         <slot :row="item">
           <td v-for="(column, index) in columns" :key="index">{{ itemValue(item, column) }}</td>
@@ -60,6 +61,12 @@ export default {
     itemValue(item, column) {
       if (typeof item[column.column] === "boolean") {
         return item[column.column] ? "+" : "-";
+      }
+      if (column.isInner) {
+        if (typeof item[column.outer][column.column] === "boolean") {
+          return item[column.outer][column.column] ? "+" : "-";
+        }
+        return item[column.outer][column.column];
       }
       return item[column.column];
     },

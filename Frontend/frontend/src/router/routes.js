@@ -1,15 +1,8 @@
 import DashboardLayout from "@/layout/dashboard/DashboardLayout.vue";
-// GeneralViews
 import NotFound from "@/pages/NotFoundPage.vue";
 
-// Admin pages
 import Dashboard from "@/pages/Dashboard.vue";
 import UserProfile from "@/pages/UserProfile.vue";
-import Notifications from "@/pages/Notifications.vue";
-import Icons from "@/pages/Icons.vue";
-import Maps from "@/pages/Maps.vue";
-import Typography from "@/pages/Typography.vue";
-import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Authentication/Login.vue";
 import Register from "@/pages/Authentication/Register.vue";
 import AuthLayout from "@/layout/dashboard/AuthLayout.vue";
@@ -17,6 +10,10 @@ import Cards from "@/pages/Cards.vue";
 import Readers from "@/pages/Readers.vue";
 import Roles from "@/pages/Roles.vue";
 import Role from "@/pages/Role.vue";
+import ReadersStat from "@/pages/ReadersStatistic.vue";
+import PersonsStat from "@/pages/PersonsStatistic.vue";
+import ReaderStat from "@/pages/ReaderStatistic.vue";
+import PersonStat from "@/pages/PersonStatistic.vue";
 
 const routes = [
   {
@@ -40,14 +37,15 @@ const routes = [
         component: Roles
       },
       {
+        path: "/role/:roleId",
+        name: "role",
+        component: Role,
+        props: true
+      },
+      {
         path: "readers",
         name: "readers",
         component: Readers
-      },
-      {
-        path: "maps",
-        name: "maps",
-        component: Maps
       },
       {
         path: "profile",
@@ -55,14 +53,25 @@ const routes = [
         component: UserProfile
       },
       {
-        path: "table-list",
-        name: "table-list",
-        component: TableList
+        path: "readersStat",
+        name: "readers-statistic",
+        component: ReadersStat
       },
       {
-        path: "/role/:roleId",
-        name: "role",
-        component: Role,
+        path: "/readerStat/:readerId",
+        name: "reader-statistic",
+        component: ReaderStat,
+        props: true
+      },
+      {
+        path: "personsStat",
+        name: "persons-statistic",
+        component: PersonsStat
+      },
+      {
+        path: "/personStat/:cardId",
+        name: "person-statistic",
+        component: PersonStat,
         props: true
       }
     ]

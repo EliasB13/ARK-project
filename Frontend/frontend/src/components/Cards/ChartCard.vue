@@ -2,14 +2,10 @@
   <card>
     <template slot="header">
       <h4 v-if="$slots.title || title" class="card-title">
-        <slot name="title">
-          {{title}}
-        </slot>
+        <slot name="title">{{title}}</slot>
       </h4>
       <p class="card-category">
-        <slot name="subTitle">
-          {{subTitle}}
-        </slot>
+        <slot name="subTitle">{{subTitle}}</slot>
       </p>
     </template>
     <div>
@@ -18,15 +14,13 @@
         <div class="chart-legend">
           <slot name="legend"></slot>
         </div>
-        <hr>
+        <hr />
         <div class="stats">
           <slot name="footer"></slot>
         </div>
-        <div class="pull-right">
-        </div>
+        <div class="pull-right"></div>
       </div>
     </div>
-
   </card>
 </template>
 <script>
@@ -75,20 +69,10 @@ export default {
     };
   },
   methods: {
-    /***
-     * Initializes the chart by merging the chart options sent via props and the default chart options
-     */
     initChart(Chartist) {
       const chartIdQuery = `#${this.chartId}`;
-      Chartist[this.chartType](
-        chartIdQuery,
-        this.chartData,
-        this.chartOptions
-      );
+      Chartist[this.chartType](chartIdQuery, this.chartData, this.chartOptions);
     },
-    /***
-     * Assigns a random id to the chart
-     */
     updateChartId() {
       const currentTime = new Date().getTime().toString();
       const randomInt = this.getRandomInt(0, currentTime);
@@ -96,12 +80,20 @@ export default {
     },
     getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    updateChart() {
+      import("chartist").then(Chartist => {
+        let ChartistLib = Chartist.default || Chartist;
+        this.$nextTick(() => {
+          this.initChart(ChartistLib);
+        });
+      });
     }
   },
   mounted() {
     this.updateChartId();
-    import('chartist').then((Chartist) => {
-      let ChartistLib = Chartist.default || Chartist ;
+    import("chartist").then(Chartist => {
+      let ChartistLib = Chartist.default || Chartist;
       this.$nextTick(() => {
         this.initChart(ChartistLib);
       });

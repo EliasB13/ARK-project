@@ -7,6 +7,7 @@ import { cards } from "./modules/cards.module";
 import { roles } from "./modules/roles.module";
 import { readers } from "./modules/readers.module";
 import { role } from "./modules/role.module";
+import { statistic } from "./modules/statistic.module";
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
     cards,
     roles,
     readers,
-    role
+    role,
+    statistic
   }
 });
