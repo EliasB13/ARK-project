@@ -3,4 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="sideBarBackground">#212120</color>
+    <color name="mainBg">#f4f3ef</color>
+    <color name="secondary">#f4f5f7</color>
+    <color name="white">#ffffff</color>
+    <color name="success">#8ef3c5</color>
+    <color name="defaultColor">#172b4d</color>
+    <color name="separatorColor">#EAEAEA</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
