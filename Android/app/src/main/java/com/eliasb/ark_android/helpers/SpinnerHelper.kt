@@ -6,12 +6,12 @@ import android.widget.ProgressBar
 
 class SpinnerHelper {
     companion object {
-        fun showSpinner(spinner: ProgressBar, btn: Button) {
+        fun showSpinner(spinner: View, btn: Button) {
             spinner.visibility = View.VISIBLE
             btn.visibility = View.GONE
         }
 
-        fun dismissSpinner(spinner: ProgressBar, btn: Button) {
+        fun dismissSpinner(spinner: View, btn: Button) {
             spinner.visibility = View.GONE
             btn.visibility = View.VISIBLE
         }

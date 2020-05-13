@@ -51,9 +51,10 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="contact_information_header">Contact information</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
+    <string name="company_name">Company name</string>
+    <string name="address">Address</string>
     <string name="phone">Phone</string>
+    <string name="description">Description</string>
 
     <!--preferences-->
     <string name="user_pref">token_pref</string>

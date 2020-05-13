@@ -1,4 +1,4 @@
-package com.eliasb.apz_android.model
+package com.eliasb.ark_android.model.dtos
 
 import com.google.gson.annotations.SerializedName
 

@@ -9,12 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.eliasb.apz_android.model.LoginRequest
-import com.eliasb.apz_android.model.LoginResponse
-import com.eliasb.apz_android.services.AccountService
 import com.eliasb.ark_android.helpers.SpinnerHelper.Companion.dismissSpinner
 import com.eliasb.ark_android.helpers.SpinnerHelper.Companion.showSpinner
 import com.eliasb.ark_android.model.dtos.ErrorBody
+import com.eliasb.ark_android.model.dtos.LoginRequest
+import com.eliasb.ark_android.model.dtos.LoginResponse
+import com.eliasb.ark_android.services.AccountService
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var signInBtn: Button
-    private lateinit var spinner: ProgressBar
+    private lateinit var spinner: View
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,8 +6,8 @@ data class AccountDataResponse(
     val id: Int,
     val login: String,
     val email: String,
-    val firstName: String,
-    val lastName: String,
+    val companyName: String,
+    val address: String,
     val phone: String,
-    val photo: String
+    val description: String
 ) : Serializable

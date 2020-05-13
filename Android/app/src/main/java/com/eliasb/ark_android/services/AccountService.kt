@@ -1,15 +1,10 @@
-package com.eliasb.apz_android.services
+package com.eliasb.ark_android.services
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.eliasb.apz_android.model.LoginRequest
-import com.eliasb.apz_android.model.LoginResponse
 import com.eliasb.ark_android.R
-import com.eliasb.ark_android.model.dtos.AccountDataResponse
-import com.eliasb.ark_android.model.dtos.RegisterRequest
-import com.eliasb.ark_android.model.dtos.UpdateAccountRequest
-import com.eliasb.ark_android.services.PreferencesService
+import com.eliasb.ark_android.model.dtos.*
 import com.eliasb.ark_android.ui.LoginActivity
 import io.reactivex.Observable
 import retrofit2.Response
@@ -26,7 +21,7 @@ interface AccountService {
     @GET("api/BusinessUsers/account-data")
     fun getProfile(@Header("Authorization")token: String): Observable<Response<AccountDataResponse>>
 
-    @PUT("PrivateUsers")
+    @PUT("api/BusinessUsers")
     fun updateProfile(@Header("Authorization")token: String, @Body updateRequest: UpdateAccountRequest): Observable<Response<AccountDataResponse>>
 
     companion object {

@@ -4,20 +4,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
-import com.eliasb.apz_android.services.AccountService
 import com.eliasb.ark_android.R
 import com.eliasb.ark_android.helpers.SpinnerHelper.Companion.dismissSpinner
 import com.eliasb.ark_android.helpers.SpinnerHelper.Companion.showSpinner
 import com.eliasb.ark_android.model.dtos.ErrorBody
 import com.eliasb.ark_android.model.dtos.RegisterRequest
+import com.eliasb.ark_android.services.AccountService
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var spinner: ProgressBar
+    private lateinit var spinner: View
     private lateinit var signUpBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
