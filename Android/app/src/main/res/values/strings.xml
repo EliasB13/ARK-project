@@ -15,18 +15,16 @@
     <string name="menu_send">Send</string>
 
     <string name="empty_list">There are no items to show</string>
-    <string name="status">Status:</string>
+    <string name="is_entrance">Is entrance:</string>
     <string name="status_taken">Taken</string>
     <string name="status_not_taken">Available</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 
     <!-- menu -->
-    <string name="menu_services">Services</string>
     <string name="service">Service</string>
-    <string name="menu_items">Items</string>
     <string name="menu_profile">Profile</string>
-    <string name="menu_github">Github</string>
-    <string name="submenu_header">Communicate</string>
-    <string name="edit_profile">Edit profile</string>
+    <string name="menu_statistic">Statistics</string>
 
     <!--auth-->
     <string name="login_main_header">Welcome</string>
@@ -70,7 +68,7 @@
     <string name="update_success">"Update profile success"</string>
 
     <!-- bundle keys -->
-    <string name="service_id">service_id</string>
+    <string name="reader_id">reader_id</string>
     <string name="account_data">account_data</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>

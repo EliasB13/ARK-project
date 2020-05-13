@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send, R.id.nav_profile
+                R.id.nav_statistic,
+                R.id.nav_profile
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
@@ -58,17 +57,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
-            R.id.nav_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.nav_home)
-            R.id.nav_gallery -> findNavController(R.id.nav_host_fragment).navigate(R.id.nav_gallery)
+            R.id.nav_statistic -> findNavController(R.id.nav_host_fragment).navigate(R.id.nav_statistic)
             R.id.nav_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.nav_profile)
-            R.id.nav_share -> {
-                val share = Intent.createChooser(Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, "https://getit13.herokuapp.com/")
-                    type = "text/plain"
-                }, null)
-                startActivity(share)
-            }
+//            R.id.nav_share -> {
+//                val share = Intent.createChooser(Intent().apply {
+//                    action = Intent.ACTION_SEND
+//                    putExtra(Intent.EXTRA_TEXT, "https://getit13.herokuapp.com/")
+//                    type = "text/plain"
+//                }, null)
+//                startActivity(share)
+//            }
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
