@@ -11,6 +11,6 @@
     <color name="danger">#ff0000</color>
     <color name="defaultColor">#172b4d</color>
     <color name="separatorColor">#EAEAEA</color>
-
+    <color name="restrictedObservationColor">#CD5C5C</color>
     <color name="black_overlay">#66000000</color>
 </resources>

@@ -9,7 +9,11 @@
         android:id="@+id/nav_statistic"
         android:name="com.eliasb.ark_android.ui.statistic.CommonStatisticFragment"
         android:label="@string/menu_statistic"
-        tools:layout="@layout/fragment_common_statistic" />
+        tools:layout="@layout/fragment_common_statistic" >
+        <action
+            android:id="@+id/action_nav_statistic_to_readerStatisticFragment"
+            app:destination="@id/readerStatisticFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.eliasb.ark_android.ui.profile.ProfileFragment"
@@ -22,6 +26,11 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.eliasb.ark_android.ui.profile.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/readerStatisticFragment"
+        android:name="com.eliasb.ark_android.ui.statistic.ReaderStatisticFragment"
+        android:label="@string/reader_stat"
+        tools:layout="@layout/fragment_reader_statstic" />
 </navigation>

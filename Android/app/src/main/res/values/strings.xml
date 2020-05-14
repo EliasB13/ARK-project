@@ -16,15 +16,18 @@
 
     <string name="empty_list">There are no items to show</string>
     <string name="is_entrance">Is entrance:</string>
+    <string name="is_restricted">Is restricted</string>
+    <string name="is_employee">Is employee</string>
     <string name="status_taken">Taken</string>
     <string name="status_not_taken">Available</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
 
     <!-- menu -->
-    <string name="service">Service</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_statistic">Statistics</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="reader_stat">Reader statistic</string>
 
     <!--auth-->
     <string name="login_main_header">Welcome</string>

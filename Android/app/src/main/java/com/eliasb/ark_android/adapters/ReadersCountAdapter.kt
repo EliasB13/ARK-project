@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.eliasb.ark_android.R
 import com.eliasb.ark_android.model.dtos.ReaderCountStat
@@ -19,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.common_stat_item.view.*
 import org.threeten.bp.LocalDateTime
 
-class ReadersAdapter(val context: Context) : RecyclerView.Adapter<ReadersAdapter.ReadersViewHolder>() {
+class ReadersCountAdapter(val context: Context) : RecyclerView.Adapter<ReadersCountAdapter.ReadersViewHolder>() {
     private val client by lazy { StatisticService.create() }
     private val readers: ArrayList<ReaderCountStat> = ArrayList()
 
@@ -49,17 +50,19 @@ class ReadersAdapter(val context: Context) : RecyclerView.Adapter<ReadersAdapter
 
         val bundle = Bundle()
         bundle.putInt(context.getString(R.string.reader_id), readers[position].id)
-        //holder.view.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_nav_services_to_availableServiceFragment, bundle))
+        holder.view.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_nav_statistic_to_readerStatisticFragment, bundle))
     }
 
     override fun getItemCount(): Int = readers.size
 
-    fun refreshReaders(emptyListView: TextView, itemsList: RecyclerView) {
+    fun refreshReaders(emptyListView: TextView, itemsList: RecyclerView, spinner: View) {
         val prefService = PreferencesService
         prefService.create(context, context.getString(R.string.user_pref))
         val token = prefService.getPreference(context.getString(R.string.token))
         val currDate = LocalDateTime.now()
         val monthAgo = currDate.minusDays(31)
+
+        spinner.visibility = View.VISIBLE
         client.getFullCountStatistic("Bearer $token", monthAgo.toString(), currDate.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -75,10 +78,12 @@ class ReadersAdapter(val context: Context) : RecyclerView.Adapter<ReadersAdapter
                 readers.clear()
                 readers.addAll(result)
                 notifyDataSetChanged()
+                spinner.visibility = View.GONE
             },
             {
                 error ->
                 Toast.makeText(context, "Refresh error: ${error.message}", Toast.LENGTH_LONG).show()
+                spinner.visibility = View.GONE
                 Log.e("ERRORS", error.message)
             })
     }
