@@ -12,19 +12,23 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_user"
             android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_restricted_obs"
+            android:icon="@drawable/ic_restricted"
+            android:title="@string/menu_restricted_obs" />
     </group>
 
-<!--    <item android:title="Communicate">-->
-<!--        <menu>-->
-<!--            <item-->
-<!--                android:id="@+id/nav_share"-->
-<!--                android:icon="@drawable/ic_menu_share"-->
-<!--                android:title="@string/menu_share" />-->
-<!--            <item-->
-<!--                android:id="@+id/nav_send"-->
-<!--                android:icon="@drawable/ic_menu_send"-->
-<!--                android:title="@string/menu_send" />-->
-<!--        </menu>-->
-<!--    </item>-->
+    <item android:title="@string/menu_communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_share" />
+            <item
+                android:id="@+id/nav_github"
+                android:icon="@drawable/ic_github"
+                android:title="@string/menu_github" />
+        </menu>
+    </item>
 
 </menu>

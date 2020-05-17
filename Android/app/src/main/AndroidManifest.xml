@@ -12,6 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".services.RestrictedObservationsReceiver"
+            android:process=":remote" >
+        </receiver>
+
+        <service
+            android:name=".services.RestrictedObservationsService"
+            android:exported="false" />
         <activity android:name=".ui.RegisterActivity"></activity>
         <activity
             android:name=".ui.LoginActivity"

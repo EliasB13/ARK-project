@@ -1,5 +1,6 @@
 package com.eliasb.ark_android.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +56,7 @@ class ReadersCountAdapter(val context: Context) : RecyclerView.Adapter<ReadersCo
 
     override fun getItemCount(): Int = readers.size
 
+    @SuppressLint("CheckResult")
     fun refreshReaders(emptyListView: TextView, itemsList: RecyclerView, spinner: View) {
         val prefService = PreferencesService
         prefService.create(context, context.getString(R.string.user_pref))

@@ -33,4 +33,9 @@
         android:name="com.eliasb.ark_android.ui.statistic.ReaderStatisticFragment"
         android:label="@string/reader_stat"
         tools:layout="@layout/fragment_reader_statstic" />
+    <fragment
+        android:id="@+id/nav_restricted_obs"
+        android:name="com.eliasb.ark_android.ui.restrictedObservations.RestrictedObservationFragment"
+        android:label="@string/restricted_obs"
+        tools:layout="@layout/fragment_restricted_observation" />
 </navigation>

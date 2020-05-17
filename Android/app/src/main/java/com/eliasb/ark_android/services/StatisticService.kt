@@ -16,6 +16,10 @@ interface StatisticService {
     @GET("api/BusinessUsers/reader-statistic/{readerId}")
     fun getReaderStatistic(@Header("Authorization") token: String, @Path("readerId") readerId: Int, @Query("lowerBound") lowerBound: String, @Query("upperBound") upperBound: String): Observable<Response<ReaderStatResponse>>
 
+    @GET("api/BusinessUsers/full-statistic")
+    fun getFullStatistic(@Header("Authorization") token: String, @Query("lowerBound") lowerBound: String, @Query("upperBound") upperBound: String): Observable<List<ReaderStatResponse>>
+
+
     companion object {
         fun create(): StatisticService {
             val retrofit = RetrofitBuilder.build()

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:importantForAutofill="noExcludeDescendants"
+    tools:ignore="UnusedAttribute">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/readers_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".ui.restrictedObservations.RestrictedObservationFragment"
+            tools:listitem="@layout/restricted_observations_item" />
+
+        <TextView
+            android:id="@+id/empty_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_list"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="5dp"
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/spinner"
+        android:visibility="gone"
+        layout="@layout/progress_dialog"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
