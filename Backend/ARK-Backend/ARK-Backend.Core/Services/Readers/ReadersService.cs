@@ -133,5 +133,21 @@ namespace ARK_Backend.Core.Services.Readers
 				return new GenericServiceResponse<ReaderDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
 			}
 		}
+
+		public async Task<GenericServiceResponse<ReaderDataDto>> GetReaderData(int readerId)
+		{
+			try
+			{
+				var reader = await dbContext.Readers.SingleOrDefaultAsync(r => r.ReaderId == readerId);
+				if (reader == null)
+					return new GenericServiceResponse<ReaderDataDto>($"Reader with id wasn't found: { readerId }", ErrorCode.READER_NOT_FOUND);
+
+				return new GenericServiceResponse<ReaderDataDto>(reader.ToDataDto());
+			}
+			catch (Exception ex)
+			{
+				return new GenericServiceResponse<ReaderDataDto>("Error | Getting reader by id: " + ex.Message, ErrorCode.INTERNAL_EXCEPTION);
+			}
+		}
 	}
 }

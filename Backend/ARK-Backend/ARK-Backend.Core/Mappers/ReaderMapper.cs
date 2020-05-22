@@ -19,6 +19,15 @@ namespace ARK_Backend.Core.Mappers
 			};
 		}
 
+		public static ReaderDataDto ToDataDto(this Reader reader)
+		{
+			return new ReaderDataDto
+			{
+				Description = reader.Description,
+				Name = reader.Name
+			};
+		}
+
 		public static Reader ToReader(this ReaderDto dto)
 		{
 			return new Reader

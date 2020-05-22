@@ -33,6 +33,17 @@ namespace ARK_Backend.Controllers
 			return Ok(result.Item);
 		}
 
+		[AllowAnonymous]
+		[HttpGet("reader-data/{readerId}")]
+		public async Task<IActionResult> GetReaderData(int readerId)
+		{
+			var result = await readersService.GetReaderData(readerId);
+			if (!result.Success)
+				return BadRequest(new { message = result.ErrorMessage, code = result.ErrorCode });
+
+			return Ok(result.Item);
+		}
+
 		[HttpPost("add-reader")]
 		public async Task<IActionResult> AddReader([FromBody]ReaderDto dto)
 		{

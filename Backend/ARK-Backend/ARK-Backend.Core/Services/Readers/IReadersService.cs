@@ -14,5 +14,6 @@ namespace ARK_Backend.Core.Services.Readers
 		Task<GenericServiceResponse<ReaderDto>> AddReader(int businessUserId, ReaderDto dto);
 		Task<GenericServiceResponse<ReaderDto>> RemoveReader(int businessUserId, int readerId);
 		Task<GenericServiceResponse<ObservationResponse>> Observe(ObservationDto dto);
+		Task<GenericServiceResponse<ReaderDataDto>> GetReaderData(int readerId);
 	}
 }

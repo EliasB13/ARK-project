@@ -1,0 +1,5 @@
+{
+  "readerId": "4",
+  "secretKey": "reader-secret-key",
+  "connectionString": "http://localhost:50518"
+}
